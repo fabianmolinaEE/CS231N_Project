@@ -20,7 +20,7 @@ Given a 2-channel input image (post-placement floorplan + power-density map), pr
 
 ## Milestones
 
-### Milestone 1 — Problem Definition + Related Work ✅
+### Milestone 1 — Problem Definition + Related Work (DONE)
 - [x] Define the problem as image-to-image regression
 - [x] Identify CircuitNet 2.0 as the primary dataset
 - [x] Plan HotSpot label generation workflow
@@ -31,7 +31,7 @@ See [`docs/project-proposal.md`](docs/project-proposal.md) and [`docs/project-mi
 
 ---
 
-### Milestone 2 — Data Pipeline 🔲
+### Milestone 2 — Data Pipeline 
 **Owner: TBD (pipeline partner)**
 
 - [ ] Download CircuitNet 2.0 and inspect the data format
@@ -48,7 +48,7 @@ See [`docs/project-proposal.md`](docs/project-proposal.md) and [`docs/project-mi
 
 ---
 
-### Milestone 3 — Baseline Models 🔲
+### Milestone 3 — Baseline Models 
 **Owner: TBD (model partner)**
 
 - [ ] Implement a simple flat CNN regressor (no skip connections, no encoder-decoder structure) as the lower bound
@@ -60,7 +60,7 @@ See [`docs/project-proposal.md`](docs/project-proposal.md) and [`docs/project-mi
 
 ---
 
-### Milestone 4 — U-Net Implementation 🔲
+### Milestone 4 — U-Net Implementation 
 **Owner: TBD (model partner)**
 
 - [ ] Implement U-Net encoder-decoder with skip connections
@@ -88,7 +88,7 @@ See [`docs/project-proposal.md`](docs/project-proposal.md) and [`docs/project-mi
 
 ---
 
-### Milestone 6 — Final Report + Poster 🔲
+### Milestone 6 — Final Report + Poster 
 **Owner: both**
 
 - [ ] Write the intro and motivation section
