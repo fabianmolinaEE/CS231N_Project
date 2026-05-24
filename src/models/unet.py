@@ -65,4 +65,12 @@ class UNet(nn.Module):
 
 
 class PhysicsLoss(nn.Module):
-    pass
+    def __init__(self, k: float = 1.0):
+        super().__init__()
+        self.k = k
+        kernel = torch.tensor([[0., 1., 0.], [1., -4., 1.], [0., 1., 0.]]).view(1, 1, 3, 3)
+        self.register_buffer('lap_kernel', kernel)
+
+    def forward(self, T_pred: torch.Tensor, Q: torch.Tensor) -> torch.Tensor:
+        lap = F.conv2d(T_pred, self.lap_kernel, padding=1)
+        return (self.k * lap + Q).pow(2).mean()

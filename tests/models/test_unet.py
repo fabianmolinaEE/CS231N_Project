@@ -65,3 +65,38 @@ class TestUNet:
         out = UNet()(x)
         out.sum().backward()
         assert x.grad is not None
+
+
+class TestPhysicsLoss:
+    def test_loss_is_scalar(self):
+        T = torch.randn(2, 1, 64, 64)
+        Q = torch.zeros(2, 1, 64, 64)
+        loss = PhysicsLoss()(T, Q)
+        assert loss.shape == ()
+
+    def test_zero_loss_when_residual_is_zero(self):
+        # construct Q = -laplacian(T) so residual is exactly zero
+        kernel = torch.tensor([[0., 1., 0.], [1., -4., 1.], [0., 1., 0.]]).view(1, 1, 3, 3)
+        T = torch.randn(1, 1, 16, 16)
+        Q = -F.conv2d(T, kernel, padding=1)
+        loss = PhysicsLoss(k=1.0)(T, Q)
+        assert loss.item() < 1e-5
+
+    def test_no_nan(self):
+        T = torch.randn(2, 1, 32, 32)
+        Q = torch.randn(2, 1, 32, 32)
+        loss = PhysicsLoss()(T, Q)
+        assert not torch.isnan(loss)
+
+    def test_gradient_flows_through_T(self):
+        T = torch.randn(1, 1, 16, 16, requires_grad=True)
+        Q = torch.randn(1, 1, 16, 16)
+        PhysicsLoss()(T, Q).backward()
+        assert T.grad is not None
+
+    def test_k_scales_loss(self):
+        T = torch.randn(1, 1, 16, 16)
+        Q = torch.zeros(1, 1, 16, 16)
+        l1 = PhysicsLoss(k=1.0)(T, Q).item()
+        l2 = PhysicsLoss(k=2.0)(T, Q).item()
+        assert abs(l2 - 4 * l1) < 1e-4
