@@ -21,9 +21,14 @@ class DoubleConv(nn.Module):
         return self.net(x)
 
 
-# Placeholder classes for future implementation
 class PixelShuffleUp(nn.Module):
-    pass
+    def __init__(self, in_ch: int, out_ch: int):
+        super().__init__()
+        self.conv = nn.Conv2d(in_ch, out_ch * 4, 1)
+        self.shuffle = nn.PixelShuffle(2)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.shuffle(self.conv(x))
 
 
 class UNet(nn.Module):
