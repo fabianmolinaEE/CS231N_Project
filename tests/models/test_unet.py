@@ -100,3 +100,17 @@ class TestPhysicsLoss:
         l1 = PhysicsLoss(k=1.0)(T, Q).item()
         l2 = PhysicsLoss(k=2.0)(T, Q).item()
         assert abs(l2 - 4 * l1) < 1e-4
+
+
+class TestIntegration:
+    def test_combined_backward(self):
+        x = torch.randn(1, 2, 64, 64)
+        T = UNet()(x)
+        loss = PhysicsLoss()(T, x[:, 1:2])
+        loss.backward()
+
+    def test_combined_no_nan(self):
+        x = torch.randn(2, 2, 64, 64)
+        T = UNet()(x)
+        loss = PhysicsLoss()(T, x[:, 1:2])
+        assert not torch.isnan(loss)
