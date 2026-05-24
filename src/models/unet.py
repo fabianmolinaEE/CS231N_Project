@@ -6,13 +6,14 @@ import torch.nn.functional as F
 class DoubleConv(nn.Module):
     """Two Conv3×3 → BN → ReLU blocks. Preserves spatial dimensions."""
 
-    def __init__(self, in_ch: int, out_ch: int):
+    def __init__(self, in_ch: int, out_ch: int, dilation: int = 1):
         super().__init__()
+        pad = dilation
         self.net = nn.Sequential(
-            nn.Conv2d(in_ch, out_ch, 3, padding=1, bias=False),
+            nn.Conv2d(in_ch, out_ch, 3, padding=pad, dilation=dilation, bias=False),
             nn.BatchNorm2d(out_ch),
             nn.ReLU(inplace=True),
-            nn.Conv2d(out_ch, out_ch, 3, padding=1, bias=False),
+            nn.Conv2d(out_ch, out_ch, 3, padding=pad, dilation=dilation, bias=False),
             nn.BatchNorm2d(out_ch),
             nn.ReLU(inplace=True),
         )
