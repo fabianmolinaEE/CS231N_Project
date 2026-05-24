@@ -37,3 +37,31 @@ class TestPixelShuffleUp:
         out = PixelShuffleUp(64, 32)(x)
         out.sum().backward()
         assert x.grad is not None
+
+
+class TestUNet:
+    def test_output_shape(self):
+        x = torch.randn(2, 2, 256, 256)
+        out = UNet()(x)
+        assert out.shape == (2, 1, 256, 256)
+
+    def test_small_input(self):
+        x = torch.randn(1, 2, 64, 64)
+        out = UNet()(x)
+        assert out.shape == (1, 1, 64, 64)
+
+    def test_no_activation_on_output(self):
+        x = torch.randn(2, 2, 64, 64)
+        out = UNet()(x)
+        assert out.min().item() < 0
+
+    def test_no_nan(self):
+        x = torch.randn(2, 2, 64, 64)
+        out = UNet()(x)
+        assert not torch.isnan(out).any()
+
+    def test_gradient_flows(self):
+        x = torch.randn(1, 2, 64, 64, requires_grad=True)
+        out = UNet()(x)
+        out.sum().backward()
+        assert x.grad is not None
