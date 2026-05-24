@@ -19,3 +19,21 @@ class TestDoubleConv:
         x = torch.randn(2, 8, 16, 16)
         out = DoubleConv(8, 8)(x)
         assert not torch.isnan(out).any()
+
+
+class TestPixelShuffleUp:
+    def test_doubles_spatial(self):
+        x = torch.randn(2, 64, 16, 16)
+        out = PixelShuffleUp(64, 32)(x)
+        assert out.shape == (2, 32, 32, 32)
+
+    def test_no_nan(self):
+        x = torch.randn(2, 128, 8, 8)
+        out = PixelShuffleUp(128, 64)(x)
+        assert not torch.isnan(out).any()
+
+    def test_gradient_flows(self):
+        x = torch.randn(1, 64, 8, 8, requires_grad=True)
+        out = PixelShuffleUp(64, 32)(x)
+        out.sum().backward()
+        assert x.grad is not None
