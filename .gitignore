@@ -1,6 +1,7 @@
 data/
 checkpoints/
 .planning/
+.claude/
 __pycache__/
 *.pyc
 .DS_Store
