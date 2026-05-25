@@ -2,12 +2,21 @@
 
 Single-block aggregate approach (per RESEARCH.md Pitfall 2):
   - Chip is a single block in .flp (thermal monolith).
-  - .ptrace contains total watts summed over all power_all tiles.
+  - .ptrace contains total watts derived from power_all tiles.
   - HotSpot grid mode distributes block power uniformly across chip area; this
     is the most natural mapping when only tile-level power density is available.
 
 Verified Plan-01 default key: all npz files use key 'data' (not the feature name).
 See docs/dataset-structure.md for verified structure.
+
+Power units note (Plan-02 finding):
+  CircuitNet power_all values appear to represent relative power density
+  (dimensionless or per-unit), NOT absolute Watts. Raw sums (~1.6e6) passed
+  directly to HotSpot cause the solver to diverge (T_chip > 160,000 K).
+  The --max-total-power-w flag (default 10.0 W) caps the total chip power to a
+  physically realistic value for the Vortex-small design family (~1mm^2 chip at
+  200 MHz). The relative spatial distribution of heat is preserved.
+  Revisit with actual physical calibration before final label generation (Plan 03).
 
 CLI usage (two separate file paths):
     python scripts/npz_to_hotspot.py \\
@@ -69,6 +78,17 @@ def main() -> int:
         default=TILE_SIZE_M,
         help="Physical tile size in meters (default: 2.25e-6 for N14)",
     )
+    parser.add_argument(
+        "--max-total-power-w",
+        type=float,
+        default=10.0,
+        help=(
+            "Cap total chip power (Watts) to this value. "
+            "CircuitNet power_all values are relative/dimensionless; raw sums "
+            "cause HotSpot to diverge. Set to 0 to disable capping. "
+            "Default: 10.0 W (realistic for Vortex-small at 200 MHz)."
+        ),
+    )
     args = parser.parse_args()
 
     fp_path = Path(args.floorplan_npz)
@@ -93,6 +113,18 @@ def main() -> int:
     total_power_w = float(np.asarray(pw_arr, dtype=np.float64).sum())
     if not np.isfinite(total_power_w) or total_power_w <= 0:
         total_power_w = 1e-6  # guard against zero/NaN; HotSpot would otherwise NaN
+
+    # Cap to realistic chip power if requested (see docstring for units explanation).
+    # Raw sums from CircuitNet power_all are ~1.6e6 "units" which causes HotSpot's
+    # steady-state solver to diverge (T > 160,000 K). We cap to --max-total-power-w
+    # to produce physically meaningful temperatures while preserving relative scaling.
+    if args.max_total_power_w > 0 and total_power_w > args.max_total_power_w:
+        print(
+            f"WARNING: raw total_power={total_power_w:.3f} W exceeds "
+            f"--max-total-power-w={args.max_total_power_w:.3f} W; "
+            f"capping to prevent HotSpot solver divergence."
+        )
+        total_power_w = args.max_total_power_w
 
     write_flp(out_dir / "design.flp", width_m, height_m)
     write_ptrace(out_dir / "design.ptrace", total_power_w)
