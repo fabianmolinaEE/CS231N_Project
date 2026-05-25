@@ -17,7 +17,15 @@ if [ "$#" -eq 0 ]; then
     set -- "Vortex-small" "Vortex-large" "NVDLA-large"
 fi
 
-# Build an include-pattern argument list for huggingface-cli download
+# Resolve CLI name: huggingface_hub>=1.0 installs as 'hf', older versions as 'huggingface-cli'
+if command -v hf &>/dev/null; then HF_CLI="hf"
+elif command -v huggingface-cli &>/dev/null; then HF_CLI="huggingface-cli"
+else
+    echo "ERROR: neither 'hf' nor 'huggingface-cli' found. Activate the venv: source .venv/bin/activate" >&2
+    exit 1
+fi
+
+# Build an include-pattern argument list
 INCLUDE_ARGS=()
 for prefix in "$@"; do
     INCLUDE_ARGS+=(--include "${SUBDIR}/${prefix}*/**")
@@ -26,7 +34,7 @@ done
 echo "Downloading from ${REPO_ID}/${SUBDIR} → ${DATA_DIR}"
 echo "Design prefixes: $*"
 
-huggingface-cli download "$REPO_ID" \
+"$HF_CLI" download "$REPO_ID" \
     --repo-type dataset \
     --local-dir "$DATA_DIR" \
     --local-dir-use-symlinks False \
