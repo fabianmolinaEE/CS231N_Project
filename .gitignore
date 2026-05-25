@@ -14,3 +14,9 @@ data/raw/
 data/processed/
 data/labels/
 data/splits/*.tmp
+third_party/HotSpot/*.o
+third_party/HotSpot/*.d
+third_party/HotSpot/hotspot
+third_party/HotSpot/hotfloorplan
+third_party/HotSpot/libhotspot.a
+third_party/HotSpot/build.log
