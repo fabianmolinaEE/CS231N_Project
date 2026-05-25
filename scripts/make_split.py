@@ -37,7 +37,7 @@ def iter_instances(raw_root: Path, labels_root: Path):
       Vortex-small: 96, Vortex-large: 61, nvdla-large: 32 -> total 189 matched
     """
     for family in GPU_FAMILIES:
-        fp_dir = raw_root / "routability_features" / family / family / "macro_region"
+        fp_dir = raw_root / "routability_features" / family / family / "cell_density"
         pw_dir = raw_root / "IR_drop_features" / family / family / "power_all"
         if not fp_dir.exists() or not pw_dir.exists():
             continue

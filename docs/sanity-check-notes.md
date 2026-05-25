@@ -1,7 +1,7 @@
 # Phase 1 Sanity Check Notes
 
 ## Status
-- Notebook executed: yes (2026-05-25, `jupyter nbconvert --to notebook --execute`)
+- Notebook executed: yes (2026-05-25, re-executed after floorplan feature fix)
 - Human review completed: yes (2026-05-25)
 - Resume signal from Task 2: `looks correct`
 
@@ -22,40 +22,46 @@
   and consistent across all samples. No corrective action needed.
 
 ### Channel Health
-- Floorplan: all-zero (all-black panels). `macro_region` feature is zero for all 5
-  Vortex-small prototype designs — these instances have no large macro blocks. Expected;
-  not a bug. The full dataset (Vortex-large, nvdla-large) will have non-zero macro regions.
-- Power: non-trivial spatial spread, fine-grained hotspot structure visible across all samples.
+- Floorplan (`cell_density`): non-trivial spatial spread (normalized range -0.98 to +6.70,
+  std=0.88). Cell density shows where standard cells are placed — a meaningful thermal proxy.
+- Power: non-trivial spatial spread (normalized range -0.40 to +7.26, std=0.80).
 - Thermal: physically reasonable range (~382.46–382.80 K, ~109°C). Narrow 0.34 K spread is
   the single-block artifact — the Modal multi-block labels will have ~54 K spread.
 
-## Per-Channel Stats (logged from notebook Cell 3)
+## Per-Channel Stats (logged from notebook Cell 3, after floorplan feature fix)
 | Channel | Min | Max | Mean | Std |
 |---------|-----|-----|------|-----|
-| x_train ch0 (floorplan, normalized) | -0.5861 | -0.5861 | -0.5861 | 0.0000 |
-| x_train ch1 (power, normalized)     | -0.3255 |  0.5298 | -0.2813 | 0.0890 |
-| y_train (thermal, raw K)            | 382.4600 | 382.8000 | 382.6373 | 0.0844 |
+| x_train ch0 (cell_density, normalized) | -0.9758 | 6.7045 | -0.0017 | 0.8803 |
+| x_train ch1 (power, normalized)        | -0.3998 | 7.2604 | -0.0037 | 0.7971 |
+| y_train (thermal, raw K)               | 382.4600 | 382.8000 | 382.6373 | 0.0844 |
 
-## Dataset Bug Fixed During Plan 01-05
-`ThermalDataset.__getitem__` had two bugs that only surface with real data (tests used
-synthetic `.npy` files at 256×256):
+## Bugs Fixed During Plan 01-05
+Three bugs found and fixed:
 
-1. `.npz` files: `np.load(path).astype()` fails on NpzFile objects. Fixed by extracting
-   key `'data'` via a `_load_array` helper.
-2. Shape mismatch: CircuitNet native resolution is 459×456; HotSpot labels are 256×256.
-   Fixed by bilinear resize (scipy `zoom`) in `_resize_to` before the shape assertion.
+1. **Wrong floorplan feature** (`macro_region` → `cell_density`): The split pipeline used
+   `macro_region` as the floorplan channel. For Vortex-small designs this is all zeros
+   (no large macro blocks). `cell_density` is the correct feature — it shows standard-cell
+   placement density and has meaningful spatial variation for all three design families.
+   Fixed in `modal_pipeline.py` and `scripts/make_split.py`. **The Modal split JSONs
+   (train/val/test.json) must be regenerated on Modal with this fix before training.**
 
-Both fixes are in `src/dataset.py`. All 44 tests pass after the fix.
+2. **NpzFile `.astype()` error** in `ThermalDataset`: `np.load(npz).astype()` fails on
+   NpzFile objects. Fixed with a `_load_array` helper extracting key `'data'`.
+
+3. **Shape mismatch**: CircuitNet native resolution is ~440–459px; HotSpot labels are
+   256×256. Fixed with bilinear resize (`scipy.ndimage.zoom`) in `_resize_to`.
+
+All 44 tests pass after the fixes.
 
 ## Carry-Forward for Phase 2
+- **Action required before training:** Re-run `modal_pipeline.py` on Modal to regenerate
+  `train.json`, `val.json`, `test.json`, and `normalization_stats.json` using `cell_density`
+  as the floorplan feature. The current Modal split JSONs point to `macro_region` paths and
+  are incorrect for training.
 - Thermal labels are in raw Kelvin (mean ~382.6 K for single-block; expect ~340–395 K
-  range for multi-block Modal labels). Consider mean-subtracting or using
-  `(T - T_mean) / T_std` normalization in the training loss for stability.
-- The floorplan `macro_region` channel is all-zero for Vortex-small designs. Phase 2
-  baseline training on Vortex-small only should treat ch0 as effectively a bias term.
-  Vortex-large and nvdla-large will populate this channel.
-- The local 5-design sanity split (`data/splits/local_train.json`,
-  `data/splits/local_val.json`) is for local visual review only — single-block labels,
+  range for multi-block Modal labels). Consider `(T - T_mean) / T_std` normalization for
+  training stability.
+- The local 5-design sanity split is for local visual review only — single-block labels,
   not suitable for training. All model training uses the Modal 189-design dataset.
 
 ## Open Items
