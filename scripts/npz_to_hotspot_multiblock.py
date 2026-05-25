@@ -66,27 +66,42 @@ def coarsen_power(pw_arr: np.ndarray, block_rows: int, block_cols: int) -> np.nd
 def write_flp(out_path: Path, chip_rows: int, chip_cols: int,
               block_rows: int, block_cols: int,
               tile_size_m: float) -> None:
-    """Write multi-block floorplan.
+    """Write multi-block floorplan with exact tile-aligned coordinates.
 
-    Blocks are laid out in a regular grid, row-major (row 0 at bottom in HotSpot coords).
-    Block naming: b{row:03d}_{col:03d}
+    Block boundaries are computed from integer tile counts × tile_size_m to avoid
+    floating-point accumulation that causes HotSpot "overlap" warnings.
+
+    Block (br, bc) spans tiles [r0:r1, c0:c1] where:
+      c0 = bc * floor(chip_cols / block_cols)  (last column absorbs remainder)
+      r0 = br * floor(chip_rows / block_rows)  (last row absorbs remainder)
+
+    HotSpot coordinate system: (0,0) at bottom-left.
+    Array row 0 (top of layout) → largest bottom_y value.
 
     Format: name<TAB>width<TAB>height<TAB>left_x<TAB>bottom_y
     """
-    chip_w = chip_cols * tile_size_m
-    chip_h = chip_rows * tile_size_m
-    block_w = chip_w / block_cols
-    block_h = chip_h / block_rows
+    # Compute tile-aligned column boundaries
+    base_col_tiles = chip_cols // block_cols
+    col_starts = [bc * base_col_tiles for bc in range(block_cols)]
+    col_ends = col_starts[1:] + [chip_cols]  # last block gets remainder
+
+    # Compute tile-aligned row boundaries
+    base_row_tiles = chip_rows // block_rows
+    row_starts = [br * base_row_tiles for br in range(block_rows)]
+    row_ends = row_starts[1:] + [chip_rows]  # last block gets remainder
 
     with open(out_path, "w") as f:
         for br in range(block_rows):
             for bc in range(block_cols):
                 name = f"b{br:03d}_{bc:03d}"
-                left_x = bc * block_w
-                # HotSpot uses (0,0) at bottom-left; row 0 of our array → top of chip
-                # Map array row br to physical bottom_y (br=0 → top → bottom_y = chip_h - block_h)
-                bottom_y = chip_h - (br + 1) * block_h
-                f.write(f"{name}\t{block_w:.9f}\t{block_h:.9f}\t{left_x:.9f}\t{bottom_y:.9f}\n")
+                # Physical coordinates from integer tile counts — no rounding error
+                left_x = col_starts[bc] * tile_size_m
+                w = (col_ends[bc] - col_starts[bc]) * tile_size_m
+                # Array row br=0 is the top; HotSpot bottom_y counts from physical bottom
+                top_y = (chip_rows - row_starts[br]) * tile_size_m
+                h = (row_ends[br] - row_starts[br]) * tile_size_m
+                bottom_y = top_y - h
+                f.write(f"{name}\t{w:.12f}\t{h:.12f}\t{left_x:.12f}\t{bottom_y:.12f}\n")
 
 
 def write_ptrace(out_path: Path, coarse_power: np.ndarray,
