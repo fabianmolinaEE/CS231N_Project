@@ -26,8 +26,8 @@ MOUNT = "/data"
 GPU_FAMILIES = ["Vortex-small", "Vortex-large", "nvdla-large"]
 RANDOM_SEED = 42  # D-07
 MAX_POWER_W = 10.0  # consistent cap across all designs (power_all not in Watts)
-GRID_ROWS = 256
-GRID_COLS = 256
+GRID_ROWS = 64
+GRID_COLS = 64
 
 # Build container image: Python deps + HotSpot built from source
 image = (
@@ -39,9 +39,9 @@ image = (
         "cd /hotspot && make SUPERLU=1 || make",
     )
     # Copy local scripts into the image
-    .copy_local_file("scripts/npz_to_hotspot_multiblock.py", "/scripts/npz_to_hotspot_multiblock.py")
-    .copy_local_file("scripts/parse_hotspot_output.py", "/scripts/parse_hotspot_output.py")
-    .copy_local_file("hotspot.config", "/hotspot.config")
+    .add_local_file("scripts/npz_to_hotspot_multiblock.py", "/scripts/npz_to_hotspot_multiblock.py")
+    .add_local_file("scripts/parse_hotspot_output.py", "/scripts/parse_hotspot_output.py")
+    .add_local_file("hotspot.config", "/hotspot.config")
 )
 
 app = modal.App("circuitnet-pipeline", image=image)
@@ -55,8 +55,8 @@ def _iter_instances(raw_root: Path):
       Vortex-small: 96, Vortex-large: 61, nvdla-large: 32 -> total 189
     """
     for family in GPU_FAMILIES:
-        fp_dir = raw_root / "routability_features" / family / family / "macro_region"
-        pw_dir = raw_root / "IR_drop_features" / family / family / "power_all"
+        fp_dir = raw_root / "routability_features" / family / "macro_region"
+        pw_dir = raw_root / "IR_drop_features" / family / "power_all"
         if not fp_dir.exists() or not pw_dir.exists():
             continue
         fp_stems = {p.stem for p in fp_dir.glob("*.npz")}
@@ -69,13 +69,16 @@ def _iter_instances(raw_root: Path):
 def _run_one(args):
     """Run HotSpot multi-block pipeline for one instance.
 
-    Designed for Python map() within a single Modal container (cpu=8).
+    Designed for ThreadPoolExecutor within a single Modal container.
     Skips instances where thermal.npy already exists (idempotent).
+    All exceptions are caught and returned as failed status.
     """
     family, stem, fp_path, pw_path, out_dir = args
     import subprocess
     import sys
     from pathlib import Path
+
+    import tempfile
 
     out = Path(out_dir)
     label_path = out / "thermal.npy"
@@ -84,44 +87,54 @@ def _run_one(args):
 
     out.mkdir(parents=True, exist_ok=True)
 
-    # Step 1: Convert npz -> .flp + .ptrace (multi-block 16x16)
-    result = subprocess.run(
-        [sys.executable, "/scripts/npz_to_hotspot_multiblock.py",
-         str(fp_path), str(pw_path), str(out),
-         "--max-total-power-w", str(MAX_POWER_W)],
-        capture_output=True, text=True
-    )
-    if result.returncode != 0:
-        return {"stem": stem, "status": "failed",
-                "error": result.stderr[-500:]}
+    try:
+        # Use /tmp for all HotSpot intermediates — volume I/O is too slow
+        with tempfile.TemporaryDirectory(dir="/tmp") as tmpdir:
+            tmp = Path(tmpdir)
 
-    # Step 2: Run HotSpot in grid mode (256x256)
-    result = subprocess.run(
-        ["/hotspot/hotspot",
-         "-c", "/hotspot.config",
-         "-f", str(out / "design.flp"),
-         "-p", str(out / "design.ptrace"),
-         "-steady_file", str(out / "design.steady"),
-         "-model_type", "grid",
-         "-grid_rows", str(GRID_ROWS),
-         "-grid_cols", str(GRID_COLS),
-         "-grid_steady_file", str(out / "design.grid.steady")],
-        capture_output=True, text=True, timeout=120
-    )
-    if result.returncode != 0:
-        return {"stem": stem, "status": "failed",
-                "error": result.stderr[-500:]}
+            # Step 1: Convert npz -> .flp + .ptrace (multi-block 16x16)
+            r1 = subprocess.run(
+                [sys.executable, "/scripts/npz_to_hotspot_multiblock.py",
+                 str(fp_path), str(pw_path), str(tmp),
+                 "--max-total-power-w", str(MAX_POWER_W)],
+                capture_output=True, text=True, timeout=60
+            )
+            if r1.returncode != 0:
+                return {"stem": stem, "status": "failed",
+                        "error": f"npz2flp: {r1.stderr[-300:]}"}
 
-    # Step 3: Parse .grid.steady -> thermal.npy (float32, 256x256 Kelvin)
-    result = subprocess.run(
-        [sys.executable, "/scripts/parse_hotspot_output.py",
-         str(out / "design.grid.steady"), str(label_path),
-         "--rows", str(GRID_ROWS), "--cols", str(GRID_COLS)],
-        capture_output=True, text=True
-    )
-    if result.returncode != 0:
-        return {"stem": stem, "status": "failed",
-                "error": result.stderr[-500:]}
+            # Step 2: Run HotSpot in grid mode (256x256) — all output to /tmp
+            r2 = subprocess.run(
+                ["/hotspot/hotspot",
+                 "-c", "/hotspot.config",
+                 "-f", str(tmp / "design.flp"),
+                 "-p", str(tmp / "design.ptrace"),
+                 "-steady_file", str(tmp / "design.steady"),
+                 "-model_type", "grid",
+                 "-grid_rows", str(GRID_ROWS),
+                 "-grid_cols", str(GRID_COLS),
+                 "-grid_steady_file", str(tmp / "design.grid.steady")],
+                capture_output=True, text=True, timeout=60
+            )
+            if r2.returncode != 0:
+                return {"stem": stem, "status": "failed",
+                        "error": f"hotspot: {r2.stderr[-300:]}"}
+
+            # Step 3: Parse .grid.steady -> thermal.npy, write to volume
+            r3 = subprocess.run(
+                [sys.executable, "/scripts/parse_hotspot_output.py",
+                 str(tmp / "design.grid.steady"), str(label_path),
+                 "--rows", str(GRID_ROWS), "--cols", str(GRID_COLS)],
+                capture_output=True, text=True, timeout=60
+            )
+            if r3.returncode != 0:
+                return {"stem": stem, "status": "failed",
+                        "error": f"parse: {r3.stderr[-300:]}"}
+
+    except subprocess.TimeoutExpired as e:
+        return {"stem": stem, "status": "failed", "error": f"timeout: {e}"}
+    except Exception as e:
+        return {"stem": stem, "status": "failed", "error": f"exception: {e}"}
 
     return {"stem": stem, "status": "ok"}
 
@@ -136,6 +149,9 @@ def generate_labels():
 
     Idempotent: existing thermal.npy files are skipped.
     """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    volume.reload()  # pull latest committed state from modal_download.py
     raw_root = Path(MOUNT) / "CircuitNet-N14"
     instances = list(_iter_instances(raw_root))
     print(f"Processing {len(instances)} instances...")
@@ -146,7 +162,24 @@ def generate_labels():
         for fam, stem, fp, pw in instances
     ]
 
-    results = list(map(_run_one, args_list))
+    results = []
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futures = {pool.submit(_run_one, a): a for a in args_list}
+        for i, fut in enumerate(as_completed(futures), 1):
+            try:
+                r = fut.result()
+            except Exception as e:
+                stem = futures[fut][1]
+                r = {"stem": stem, "status": "failed", "error": str(e)}
+            results.append(r)
+            if r["status"] == "failed":
+                print(f"  FAIL [{i}] {r['stem']}: {r.get('error', '')[:300]}")
+            if i % 20 == 0:
+                ok = sum(1 for x in results if x["status"] == "ok")
+                skip = sum(1 for x in results if x["status"] == "skipped")
+                fail = sum(1 for x in results if x["status"] == "failed")
+                print(f"  {i}/{len(args_list)}: {ok} ok, {skip} skipped, {fail} failed")
+
     ok = sum(1 for r in results if r["status"] == "ok")
     skipped = sum(1 for r in results if r["status"] == "skipped")
     failed = [r for r in results if r["status"] == "failed"]
@@ -174,6 +207,7 @@ def make_split_and_stats():
     import numpy as np
     from pathlib import Path
 
+    volume.reload()  # pull latest state including generated labels
     raw_root = Path(MOUNT) / "CircuitNet-N14"
     labels_root = Path(MOUNT) / "labels"
 

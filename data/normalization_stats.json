@@ -1,1 +1,10 @@
-{"floorplan": {"mean": null, "std": null}, "power": {"mean": null, "std": null}}
+{
+  "floorplan": {
+    "mean": 0.2557041192705744,
+    "std": 0.4362562580165862
+  },
+  "power": {
+    "mean": 57.14135733016492,
+    "std": 175.52337223160353
+  }
+}
