@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import List, Optional
 
 import numpy as np
+from scipy.ndimage import zoom
 import torch
 from torch.utils.data import Dataset
 
@@ -51,18 +52,40 @@ class ThermalDataset(Dataset):
         self.pw_std: Optional[float] = float(pw_std) if pw_std is not None else None
         self.training = bool(training)
 
+    @staticmethod
+    def _load_array(path: str) -> np.ndarray:
+        """Load from .npy or .npz (key='data'). Always returns float32 2-D array."""
+        p = Path(path)
+        if p.suffix == ".npz":
+            npz = np.load(p, allow_pickle=False)
+            return npz["data"].astype(np.float32)
+        return np.load(p).astype(np.float32)
+
+    @staticmethod
+    def _resize_to(arr: np.ndarray, target_h: int, target_w: int) -> np.ndarray:
+        """Bilinear resize to (target_h, target_w) if needed."""
+        if arr.shape == (target_h, target_w):
+            return arr
+        zh = target_h / arr.shape[0]
+        zw = target_w / arr.shape[1]
+        return zoom(arr, (zh, zw), order=1)
+
     def __len__(self) -> int:
         return len(self.index)
 
     def __getitem__(self, idx: int):
         entry = self.index[idx]
-        fp = np.load(entry["floorplan"]).astype(np.float32)
-        pw = np.load(entry["power"]).astype(np.float32)
-        lb = np.load(entry["label"]).astype(np.float32)
+        lb = self._load_array(entry["label"])
+        H, W = lb.shape
+
+        # Resize input features to match label spatial resolution (CircuitNet
+        # native 459x456 -> 256x256 label grid produced by HotSpot + parse step).
+        fp = self._resize_to(self._load_array(entry["floorplan"]), H, W)
+        pw = self._resize_to(self._load_array(entry["power"]), H, W)
 
         # DATA-02: alignment assertion (defensive)
         assert fp.shape == pw.shape == lb.shape, (
-            f"Shape mismatch at idx={idx} design={entry.get('design')}: "
+            f"Shape mismatch at idx={idx} design={entry.get('instance')}: "
             f"fp={fp.shape} pw={pw.shape} label={lb.shape}"
         )
 
