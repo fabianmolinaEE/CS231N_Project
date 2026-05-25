@@ -1,9 +1,19 @@
 """Parse HotSpot .grid.steady output -> resized float32 .npy.
 
-Format (verified from HotSpot examples):
-  Each non-header line: <col_idx> <row_idx> <temperature_kelvin>
-  Some lines may be comments or headers (non-numeric) - those are skipped.
-  Row indices may run max->0; orientation is documented after Plan 05 visualization.
+Verified format (Plan-02, HotSpot v6 grid mode):
+  Layer 0:
+  0<TAB>382.46
+  1<TAB>382.46
+  ...
+  65535<TAB>319.58
+  Layer 1:
+  0<TAB>...
+  ...
+
+  - File contains 4 layers (die, spreader, sink, ...) separated by "Layer N:" headers.
+  - Each layer has rows*cols entries in row-major order: idx = row * cols + col.
+  - We extract Layer 0 (the chip die layer).
+  - Temperature values are in Kelvin.
 
 CLI usage:
     python scripts/parse_hotspot_output.py \\
@@ -20,35 +30,73 @@ import numpy as np
 from scipy.ndimage import zoom
 
 
-def parse_grid_steady(path: Path, rows: int, cols: int) -> np.ndarray:
+def parse_grid_steady(path: Path, rows: int, cols: int, layer: int = 0) -> np.ndarray:
     """Parse HotSpot .grid.steady file into a float32 numpy array.
+
+    Actual format (verified Plan-02):
+        Layer 0:
+        <idx>\\t<temp_kelvin>
+        ...
+        Layer 1:
+        ...
+
+    Indices are sequential (row-major): row = idx // cols, col = idx % cols.
 
     Args:
         path: Path to .grid.steady file.
         rows: Number of grid rows used in the HotSpot simulation.
         cols: Number of grid cols used in the HotSpot simulation.
+        layer: Which layer to extract (default 0 = chip die).
 
     Returns:
         float32 array of shape (rows, cols) with temperature in Kelvin.
     """
     grid = np.zeros((rows, cols), dtype=np.float32)
+    n_cells = rows * cols
+    in_target_layer = False
     seen = 0
+
     with open(path) as f:
         for line in f:
-            parts = line.strip().split()
-            if len(parts) != 3:
+            stripped = line.strip()
+            if not stripped:
+                continue
+            # Detect layer header lines: "Layer N:"
+            if stripped.startswith("Layer "):
+                try:
+                    layer_num = int(stripped.split()[1].rstrip(":"))
+                    in_target_layer = (layer_num == layer)
+                except (IndexError, ValueError):
+                    in_target_layer = False
+                continue
+            if not in_target_layer:
+                continue
+            # Data line: "<idx>\t<temperature>"
+            parts = stripped.split()
+            if len(parts) != 2:
                 continue
             try:
-                col_idx = int(parts[0])
-                row_idx = int(parts[1])
-                temp = float(parts[2])
+                idx = int(parts[0])
+                temp = float(parts[1])
             except ValueError:
                 continue
-            if 0 <= row_idx < rows and 0 <= col_idx < cols:
+            if 0 <= idx < n_cells:
+                row_idx = idx // cols
+                col_idx = idx % cols
                 grid[row_idx, col_idx] = temp
                 seen += 1
+
     if seen == 0:
-        raise RuntimeError(f"No grid values parsed from {path}")
+        raise RuntimeError(
+            f"No grid values parsed from {path} for layer={layer}. "
+            f"Check that HotSpot ran in grid mode and the file is not empty."
+        )
+    if seen < n_cells:
+        import warnings
+        warnings.warn(
+            f"Only {seen}/{n_cells} cells parsed from {path} layer={layer}. "
+            f"Missing cells default to 0.0 K."
+        )
     return grid
 
 
@@ -91,9 +139,15 @@ def main() -> int:
         default=256,
         help="Target output cols (default: 256)",
     )
+    parser.add_argument(
+        "--layer",
+        type=int,
+        default=0,
+        help="HotSpot layer index to extract (default: 0 = chip die)",
+    )
     args = parser.parse_args()
 
-    grid = parse_grid_steady(Path(args.grid_steady_path), args.rows, args.cols)
+    grid = parse_grid_steady(Path(args.grid_steady_path), args.rows, args.cols, args.layer)
     final = resize_to(grid, args.target_rows, args.target_cols)
     assert final.shape == (args.target_rows, args.target_cols)
     assert final.dtype == np.float32
