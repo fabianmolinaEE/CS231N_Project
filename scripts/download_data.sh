@@ -37,7 +37,6 @@ echo "Design prefixes: $*"
 "$HF_CLI" download "$REPO_ID" \
     --repo-type dataset \
     --local-dir "$DATA_DIR" \
-    --local-dir-use-symlinks False \
     --token "$HF_TOKEN" \
     "${INCLUDE_ARGS[@]}"
 
