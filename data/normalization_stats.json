@@ -1,10 +1,11 @@
 {
   "floorplan": {
-    "mean": 0.2557041192705744,
-    "std": 0.4362562580165862
+    "mean": 0.8329272254710851,
+    "std": 0.8536051468224942
   },
   "power": {
-    "mean": 57.14135733016492,
-    "std": 175.52337223160353
-  }
+    "mean": 7.836358185263831,
+    "std": 19.599636224422213
+  },
+  "_note": "local-only stats from 4 Vortex-small designs (cell_density feature). Regenerate on Modal for training."
 }
