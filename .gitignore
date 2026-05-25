@@ -7,3 +7,10 @@ __pycache__/
 .DS_Store
 *.egg-info/
 .env
+.venv/
+.pytest_cache/
+notebooks/.ipynb_checkpoints/
+data/raw/
+data/processed/
+data/labels/
+data/splits/*.tmp
