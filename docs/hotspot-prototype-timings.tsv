@@ -1,1 +1,6 @@
 design	wall_seconds	thermal_min_k	thermal_max_k	thermal_mean_k
+Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap	8	382.460	382.800	382.637
+Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar	7	382.460	382.800	382.637
+Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap	7	382.460	382.800	382.637
+Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar	7	382.460	382.800	382.637
+Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap	7	382.460	382.800	382.637
