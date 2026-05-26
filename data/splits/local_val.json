@@ -1,9 +1,9 @@
 [
   {
-    "instance": "Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap",
-    "family": "Vortex-small",
-    "floorplan": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/raw/CircuitNet-N14/routability_features/Vortex-small/Vortex-small/cell_density/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
-    "power": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/raw/CircuitNet-N14/IR_drop_features/Vortex-small/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
-    "label": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/labels/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap/thermal.npy"
+    "instance": "nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/raw/CircuitNet-N14/routability_features/nvdla-large/nvdla-large/cell_density/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/raw/CircuitNet-N14/IR_drop_features/nvdla-large/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/labels/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
   }
 ]
