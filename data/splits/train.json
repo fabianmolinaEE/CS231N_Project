@@ -1,0 +1,1073 @@
+[
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_2_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_4_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_1_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_2_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_500_mp_1_fpu_55_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_55_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_55_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_1_fpu_65_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_1_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_1_fpu_50_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_50_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_50_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_55_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_65_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_55_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_2_fpu_50_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_55_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_55_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_55_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_55_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_500_mp_1_fpu_60_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_60_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_50_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_50_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_55_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_2_fpu_60_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_65_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_1_fpu_55_fpa_1.0_p_4_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_1_fpu_65_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_4_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_65_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_200_mp_2_fpu_50_fpa_1.0_p_1_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar",
+    "family": "Vortex-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-large/macro_region/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-large/power_all/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar.npz",
+    "label": "/data/labels/Vortex-large/Vortex-large_freq_200_mp_1_fpu_50_fpa_1.0_p_1_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_50_fpa_1.0_p_2_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_500_mp_1_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_50_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_500_mp_1_fpu_50_fpa_1.0_p_2_fi_ar/thermal.npy"
+  },
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ap",
+    "family": "nvdla-large",
+    "floorplan": "/data/CircuitNet-N14/routability_features/nvdla-large/macro_region/nvdla-large_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ap.npz",
+    "label": "/data/labels/nvdla-large/nvdla-large_freq_500_mp_1_fpu_50_fpa_1.0_p_4_fi_ap/thermal.npy"
+  },
+  {
+    "instance": "Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_2_fi_ap",
+    "family": "Vortex-small",
+    "floorplan": "/data/CircuitNet-N14/routability_features/Vortex-small/macro_region/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "power": "/data/CircuitNet-N14/IR_drop_features/Vortex-small/power_all/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_2_fi_ap.npz",
+    "label": "/data/labels/Vortex-small/Vortex-small_freq_500_mp_2_fpu_60_fpa_1.0_p_2_fi_ap/thermal.npy"
+  }
+]
