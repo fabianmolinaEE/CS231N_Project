@@ -173,17 +173,32 @@ Reference: [TernausNet (Iglovikov & Shvets, 2018)](https://arxiv.org/abs/1801.05
 
 ## Loss Function
 
-**Recommended: L1 + SSIM composite**
+**Primary: Physics-informed composite loss**
+
+The 2D steady-state heat equation: `k · ∇²T + Q = 0`
+
+Where `T` is the predicted temperature map, `Q` is the power-density input channel, and `k` is silicon thermal conductivity (~149 W/m·K). The Laplacian is computed via a fixed (non-learned) 3×3 convolution:
 
 ```
-Loss = 0.7 × L1(pred, target) + 0.3 × (1 − SSIM(pred, target))
+Laplacian kernel:  0   1   0
+                   1  -4   1
+                   0   1   0
 ```
 
-- **L1** preserves absolute temperature accuracy (critical for thermal maps); avoids MSE-induced blurring
-- **SSIM** preserves spatial structure and thermal gradients (perceptual quality of heatmap)
-- Start with α = 0.7/0.3; tune as ablation
+Training objective:
 
-Alternatives to benchmark: pure MSE (lower bound baseline), pure L1, Smooth L1 (Huber)
+```
+L_total = λ_data · L_MSE(T_pred, T_label) + λ_phys · mean(|| k · ∇²T_pred + Q ||²)
+```
+
+Fully differentiable. No simulation at training time. The physics term penalizes predictions that violate the heat equation regardless of whether a ground-truth label exists — this is what helps OOD generalization.
+
+**Baseline (comparison):** MSE-only (`λ_phys = 0`)
+
+**Ablation sweep:**
+- `λ_phys` values (log sweep: 0, 0.01, 0.1, 1.0)
+- Physics loss in normalized vs. physical units
+- L1 vs. MSE for the data term
 
 ---
 
@@ -208,13 +223,18 @@ PixelShuffle block:
 
 | Design | Params | VRAM | Key Advantage | Key Risk | Priority |
 |--------|--------|------|---------------|----------|----------|
-| Classic U-Net | ~8M | 4–6 GB | Simple, proven baseline | Blurred outputs, no feature selection | Implement first |
-| Attention U-Net | ~8.5M | ~5 GB | Spatial focus, interpretable | Modest gains (~1%) | Optional ablation |
-| **U-Net++** | **~10M** | **6–7 GB** | **Multi-scale, sharper outputs, regularized** | **More complex** | **Primary model** |
-| EfficientNet-B4 + decoder | ~19M | ~2.5 GB | Fast convergence | Domain shift from ImageNet | Ablation vs U-Net++ |
+| **Classic U-Net + physics loss** | **~8M** | **4–6 GB** | **Physics constraint → OOD generalization** | **Physics loss tuning** | **Primary model** |
+| Classic U-Net (MSE-only) | ~8M | 4–6 GB | Simple baseline | Blurred outputs, no physics | Implement first |
+| Encoder-decoder (no skip) | ~5M | ~3 GB | Ablation: skip connection value | Weaker performance expected | Ablation |
+| Flat CNN regressor | ~3M | ~2 GB | Lower bound | No spatial structure | Ablation |
+| Attention U-Net | ~8.5M | ~5 GB | Spatial focus, interpretable | Modest gains | Optional if time permits |
+| U-Net++ | ~10M | 6–7 GB | Multi-scale, sharper outputs | More complex, secondary concern | Deprioritized |
 
 **Implementation order:**
-1. Classic U-Net — establish baseline metrics (SSIM, RMSE, hotspot recall)
-2. U-Net++ — primary model; expect 3–5% SSIM gain over baseline
-3. EfficientNet-B4 — ablation to determine whether ImageNet transfer helps
-4. Attention U-Net — only if U-Net++ underperforms expectations
+1. Flat CNN regressor + encoder-decoder — lower bounds
+2. Classic U-Net with MSE-only loss — primary baseline
+3. Classic U-Net with physics loss (`L_total = λ_data · L_MSE + λ_phys · L_physics`) — primary model
+4. OOD evaluation: compare degradation on unseen die configs between steps 2 and 3
+5. Attention U-Net / U-Net++ — only if physics-constrained U-Net underperforms expectations
+
+The novelty is the physics constraint, not the architecture complexity. Keep the backbone simple so the loss function effect is clearly attributable.
