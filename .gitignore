@@ -1,0 +1,26 @@
+# Ignore bulk data directories (raw downloads, processed tensors, generated labels)
+# Note: data/ itself is NOT ignored so git can see exceptions below
+data/raw/
+data/processed/
+data/labels/
+# Ignore temporary split files
+data/splits/*.tmp
+# Committed small artifacts: split index JSONs + normalization stats
+# (all other data/splits/* and data/* are excluded via the directories above)
+checkpoints/
+.planning/
+.claude/
+__pycache__/
+*.pyc
+.DS_Store
+*.egg-info/
+.env
+.venv/
+.pytest_cache/
+notebooks/.ipynb_checkpoints/
+third_party/HotSpot/*.o
+third_party/HotSpot/*.d
+third_party/HotSpot/hotspot
+third_party/HotSpot/hotfloorplan
+third_party/HotSpot/libhotspot.a
+third_party/HotSpot/build.log

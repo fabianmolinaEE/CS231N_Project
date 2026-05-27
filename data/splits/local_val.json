@@ -1,0 +1,9 @@
+[
+  {
+    "instance": "nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar",
+    "family": "nvdla-large",
+    "floorplan": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/raw/CircuitNet-N14/routability_features/nvdla-large/nvdla-large/cell_density/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "power": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/raw/CircuitNet-N14/IR_drop_features/nvdla-large/nvdla-large/power_all/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar.npz",
+    "label": "/Users/fabianmolina/Documents/REPOS/CS231N_Project/data/labels/nvdla-large_freq_500_mp_1_fpu_60_fpa_1.0_p_2_fi_ar/thermal.npy"
+  }
+]
