@@ -110,19 +110,25 @@ def test_augmentation_paired(tmp_dataset):
 
     ds_train = ThermalDataset(tmp_dataset["index"], tmp_dataset["stats"], training=True)
 
-    # Force both flip branches to take by returning 0.0 (which is < 0.5).
+    # Force both flip branches to take (rand -> 0.0 < 0.5) and rotation to k=0.
     import src.dataset as ds_mod
 
     orig_rand = torch.rand
+    orig_randint = torch.randint
 
     def always_flip(*args, **kwargs):
         return torch.zeros(1)
 
+    def no_rotation(*args, **kwargs):
+        return torch.zeros(1, dtype=torch.long)
+
     ds_mod.torch.rand = always_flip
+    ds_mod.torch.randint = no_rotation
     try:
         x_train, y_train = ds_train[0]
     finally:
         ds_mod.torch.rand = orig_rand
+        ds_mod.torch.randint = orig_randint
 
     expected_x = torch.flip(torch.flip(x_eval, dims=[2]), dims=[1])
     expected_y = torch.flip(torch.flip(y_eval, dims=[2]), dims=[1])
