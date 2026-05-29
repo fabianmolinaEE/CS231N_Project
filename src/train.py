@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -78,7 +79,7 @@ def train(
     lam_phys: float = 0.1,
     checkpoint_dir: str | Path = "checkpoints",
     device: str = "cuda",
-    log_fn=None,
+    log_fn: Callable[[int, dict, dict, float], None] | None = None,
 ) -> None:
     checkpoint_dir = Path(checkpoint_dir)
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
