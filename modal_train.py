@@ -101,10 +101,17 @@ def train_unet(
         },
     )
 
-    def _tensor_to_pil(t, cmap="inferno"):
-        """Convert (1, H, W) or (H, W) tensor to a PIL Image using a colormap."""
+    # Pre-load one val sample for image previews — avoids spawning/leaking
+    # DataLoader workers on every image-logging epoch (WR-02).
+    _x0, _y0 = val_ds[0]
+    _x0 = _x0.unsqueeze(0)   # (1, 2, H, W)
+    _y0 = _y0.unsqueeze(0)   # (1, 1, H, W)
+
+    def _tensor_to_pil(t, vmin, vmax, cmap="inferno"):
+        """Render tensor as a PIL Image using a shared [vmin, vmax] scale (WR-03)."""
         arr = t.squeeze().cpu().float().numpy()
-        arr = (arr - arr.min()) / (arr.max() - arr.min() + 1e-8)
+        arr = (arr - vmin) / (vmax - vmin + 1e-8)
+        arr = arr.clip(0, 1)
         colored = (plt.get_cmap(cmap)(arr)[:, :, :3] * 255).astype(np.uint8)
         return PILImage.fromarray(colored)
 
@@ -121,32 +128,36 @@ def train_unet(
         }
         if epoch % 10 == 0:
             model.eval()
-            with torch.no_grad():
-                x_sample, T_gt_sample = next(iter(val_loader))
-                x_sample = x_sample[:1].to(device)
-                T_gt_sample = T_gt_sample[:1].to(device)
-                T_pred_sample = model(x_sample)
-            model.train()
+            try:
+                with torch.no_grad():
+                    x_s = _x0.to(device)
+                    y_s = _y0.to(device)
+                    pred_s = model(x_s)
+            finally:
+                model.train()  # always restore, even if inference fails (WR-01)
+            gt_arr = y_s[0].squeeze().cpu().float().numpy()
+            vmin, vmax = float(gt_arr.min()), float(gt_arr.max())
             log_dict["val/sample"] = [
-                wandb.Image(_tensor_to_pil(x_sample[0, 0], cmap="gray"),  caption="Cell Density"),
-                wandb.Image(_tensor_to_pil(T_pred_sample[0], cmap="inferno"), caption="Predicted"),
-                wandb.Image(_tensor_to_pil(T_gt_sample[0],   cmap="inferno"), caption="Ground Truth"),
+                wandb.Image(_tensor_to_pil(x_s[0, 0], 0.0, 1.0, cmap="gray"), caption="Cell Density"),
+                wandb.Image(_tensor_to_pil(pred_s[0], vmin, vmax, cmap="inferno"), caption="Predicted"),
+                wandb.Image(_tensor_to_pil(y_s[0],    vmin, vmax, cmap="inferno"), caption="Ground Truth"),
             ]
         wandb.log(log_dict, step=epoch)
 
-    train(
-        model,
-        train_loader,
-        val_loader,
-        epochs=epochs,
-        lr=lr,
-        lam_phys=lam_phys,
-        checkpoint_dir=ckpt_dir,
-        device=device,
-        log_fn=log_fn,
-    )
-
-    wandb.finish()
+    try:
+        train(
+            model,
+            train_loader,
+            val_loader,
+            epochs=epochs,
+            lr=lr,
+            lam_phys=lam_phys,
+            checkpoint_dir=ckpt_dir,
+            device=device,
+            log_fn=log_fn,
+        )
+    finally:
+        wandb.finish()  # always mark run complete, even on crash (WR-04)
     volume.commit()
     print(f"Checkpoint saved to {ckpt_dir}/best.pt")
 
