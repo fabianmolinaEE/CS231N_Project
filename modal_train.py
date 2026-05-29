@@ -40,7 +40,7 @@ app = modal.App("unet-thermal-train", image=image)
 )
 def train_unet(
     lam_phys: float = 0.1,
-    epochs: int = 80,
+    epochs: int = 150,
     lr: float = 1e-3,
     batch_size: int = 8,
     base_channels: int = 32,
@@ -165,7 +165,7 @@ def train_unet(
 @app.local_entrypoint()
 def main(
     lam_phys: float = 0.1,
-    epochs: int = 80,
+    epochs: int = 150,
     lr: float = 1e-3,
     batch_size: int = 8,
     base_channels: int = 32,
