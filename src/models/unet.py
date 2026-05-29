@@ -33,7 +33,7 @@ class PixelShuffleUp(nn.Module):
 
 
 class UNet(nn.Module):
-    def __init__(self, in_channels: int = 2, out_channels: int = 1, base_channels: int = 64):
+    def __init__(self, in_channels: int = 2, out_channels: int = 1, base_channels: int = 32):
         super().__init__()
         b = base_channels
         self.enc1 = DoubleConv(in_channels, b)
@@ -41,6 +41,7 @@ class UNet(nn.Module):
         self.enc3 = DoubleConv(b * 2, b * 4)
         self.enc4 = DoubleConv(b * 4, b * 8)
         self.bottleneck = DoubleConv(b * 8, b * 16)
+        self.bottleneck_drop = nn.Dropout2d(0.3)
         self.pool = nn.MaxPool2d(2)
         self.up4 = PixelShuffleUp(b * 16, b * 8)
         self.dec4 = DoubleConv(b * 16, b * 8)
@@ -57,7 +58,7 @@ class UNet(nn.Module):
         e2 = self.enc2(self.pool(e1))
         e3 = self.enc3(self.pool(e2))
         e4 = self.enc4(self.pool(e3))
-        b = self.bottleneck(self.pool(e4))
+        b = self.bottleneck_drop(self.bottleneck(self.pool(e4)))
         d4 = self.dec4(torch.cat([self.up4(b), e4], dim=1))
         d3 = self.dec3(torch.cat([self.up3(d4), e3], dim=1))
         d2 = self.dec2(torch.cat([self.up2(d3), e2], dim=1))

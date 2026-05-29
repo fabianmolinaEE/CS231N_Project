@@ -2,7 +2,7 @@
 
 Implements DATA-02 (alignment), DATA-07 (loading), DATA-08 (augmentation).
 Honors locked decisions D-09 (per-channel norm from train split only),
-D-10 (raw temperature labels), D-11 (H+V flip, train-only, paired with label).
+D-10 (raw temperature labels), D-11 (H+V flip + 90° rotation, train-only, paired with label).
 """
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ class ThermalDataset(Dataset):
         stats_path: path to data/normalization_stats.json with per-channel
             {"floorplan": {"mean", "std"}, "power": {"mean", "std"}}.
             If mean/std values are null, normalization is skipped (pass-through).
-        training: if True, apply horizontal+vertical flip augmentation (D-11);
+        training: if True, apply random 90° rotation + H/V flip augmentation (D-11);
             applied IDENTICALLY to input and label (Pitfall 4).
 
     __getitem__ returns:
@@ -102,13 +102,17 @@ class ThermalDataset(Dataset):
 
         x = torch.cat([fp_t, pw_t], dim=0)  # (2, H, W)
 
-        # D-11: identical random flip on x and label, train-only, no augmentation in eval
+        # D-11: identical random rotation + flip on x and label, train-only
         if self.training:
+            k = torch.randint(0, 4, (1,)).item()
+            if k > 0:
+                x = torch.rot90(x, k, dims=[1, 2])
+                lb_t = torch.rot90(lb_t, k, dims=[1, 2])
             if torch.rand(1).item() < 0.5:
-                x = torch.flip(x, dims=[2])      # horizontal (last axis = W)
+                x = torch.flip(x, dims=[2])
                 lb_t = torch.flip(lb_t, dims=[2])
             if torch.rand(1).item() < 0.5:
-                x = torch.flip(x, dims=[1])      # vertical (axis = H)
+                x = torch.flip(x, dims=[1])
                 lb_t = torch.flip(lb_t, dims=[1])
 
         return x.contiguous(), lb_t.contiguous()
