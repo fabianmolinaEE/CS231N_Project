@@ -23,8 +23,11 @@ class ThermalDataset(Dataset):
         index_path: path to data/splits/{train,val,test}.json (list of dicts with
             "floorplan", "power", "label" string paths).
         stats_path: path to data/normalization_stats.json with per-channel
-            {"floorplan": {"mean", "std"}, "power": {"mean", "std"}}.
+            {"floorplan": {"mean", "std"}, "power": {"mean", "std"},
+             "label": {"family": {"mean", "std"}, ...}}.
             If mean/std values are null, normalization is skipped (pass-through).
+        label_stats: per-family label stats dict, e.g. from stats["label"].
+            If None, label normalization is skipped.
         training: if True, apply random 90° rotation + H/V flip augmentation (D-11);
             applied IDENTICALLY to input and label (Pitfall 4).
 
@@ -39,8 +42,7 @@ class ThermalDataset(Dataset):
         index_path: str,
         stats_path: str,
         training: bool = False,
-        label_mean: float = 0.0,
-        label_std: float = 1.0,
+        label_stats: Optional[dict] = None,
     ):
         with open(index_path) as f:
             self.index: List[dict] = json.load(f)
@@ -57,8 +59,8 @@ class ThermalDataset(Dataset):
         self.fp_std: Optional[float] = float(fp_std) if fp_std is not None else None
         self.pw_mean: Optional[float] = float(pw_mean) if pw_mean is not None else None
         self.pw_std: Optional[float] = float(pw_std) if pw_std is not None else None
-        self.label_mean = float(label_mean)
-        self.label_std = float(label_std)
+        # Per-family label stats: {"Vortex-small": {"mean": ..., "std": ...}, ...}
+        self.label_stats: Optional[dict] = label_stats
         self.training = bool(training)
 
     @staticmethod
@@ -111,7 +113,9 @@ class ThermalDataset(Dataset):
 
         x = torch.cat([fp_t, pw_t], dim=0)  # (2, H, W)
 
-        lb_t = (lb_t - self.label_mean) / (self.label_std + 1e-8)
+        if self.label_stats is not None:
+            fam_stats = self.label_stats[entry["family"]]
+            lb_t = (lb_t - fam_stats["mean"]) / (fam_stats["std"] + 1e-8)
 
         # D-11: identical random rotation + flip on x and label, train-only
         if self.training:

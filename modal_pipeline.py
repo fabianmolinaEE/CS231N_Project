@@ -26,8 +26,8 @@ MOUNT = "/data"
 GPU_FAMILIES = ["Vortex-small", "Vortex-large", "nvdla-large"]
 RANDOM_SEED = 42  # D-07
 MAX_POWER_W = 10.0  # consistent cap across all designs (power_all not in Watts)
-GRID_ROWS = 64
-GRID_COLS = 64
+GRID_ROWS = 256
+GRID_COLS = 256
 
 # Build container image: Python deps + HotSpot built from source
 image = (
@@ -114,7 +114,7 @@ def _run_one(args):
                  "-grid_rows", str(GRID_ROWS),
                  "-grid_cols", str(GRID_COLS),
                  "-grid_steady_file", str(tmp / "design.grid.steady")],
-                capture_output=True, text=True, timeout=60
+                capture_output=True, text=True, timeout=2000
             )
             if r2.returncode != 0:
                 return {"stem": stem, "status": "failed",
@@ -139,15 +139,37 @@ def _run_one(args):
     return {"stem": stem, "status": "ok"}
 
 
-@app.function(volumes={MOUNT: volume}, timeout=3600, cpu=8)
-def generate_labels():
+@app.function(volumes={MOUNT: volume}, timeout=120)
+def clear_labels():
+    """Delete all thermal.npy label files from the volume.
+
+    Run this before re-generating labels at a new grid resolution, since
+    generate_labels() skips instances where thermal.npy already exists.
+
+        modal run modal_pipeline.py::clear_labels
+    """
+    import shutil
+    labels_root = Path(MOUNT) / "labels"
+    if labels_root.exists():
+        shutil.rmtree(labels_root)
+        print(f"Deleted {labels_root}")
+    else:
+        print("No labels directory found — nothing to delete.")
+    volume.commit()
+
+
+@app.function(volumes={MOUNT: volume}, timeout=36000, cpu=16)
+def generate_labels(start: int = 0, limit: int = 0):
     """Generate HotSpot thermal labels for all 189 GPU instances.
 
     Runs multi-block 16x16 HotSpot pipeline for each instance in parallel
-    using Python map() with cpu=8. Results saved to:
+    using Python ThreadPoolExecutor with cpu=16. Results saved to:
       /data/labels/{family}/{stem}/thermal.npy
 
     Idempotent: existing thermal.npy files are skipped.
+    Args:
+        start: index into the full instance list to begin at (for parallel sharding).
+        limit: if > 0, process only this many instances starting from start.
     """
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -161,6 +183,10 @@ def generate_labels():
          str(Path(MOUNT) / "labels" / fam / stem))
         for fam, stem, fp, pw in instances
     ]
+
+    end = (start + limit) if limit > 0 else len(args_list)
+    args_list = args_list[start:end]
+    print(f"Shard: indices {start}–{end-1} ({len(args_list)} instances)")
 
     results = []
     with ThreadPoolExecutor(max_workers=8) as pool:
@@ -179,6 +205,7 @@ def generate_labels():
                 skip = sum(1 for x in results if x["status"] == "skipped")
                 fail = sum(1 for x in results if x["status"] == "failed")
                 print(f"  {i}/{len(args_list)}: {ok} ok, {skip} skipped, {fail} failed")
+                volume.commit()  # save progress in case of timeout
 
     ok = sum(1 for r in results if r["status"] == "ok")
     skipped = sum(1 for r in results if r["status"] == "skipped")
@@ -241,21 +268,39 @@ def make_split_and_stats():
         (splits_dir / f"{name}.json").write_text(json.dumps(data, indent=2))
 
     # Normalization stats from train only (D-09, prevents val/test leakage)
+    from collections import defaultdict
     fp_vals, pw_vals = [], []
+    label_by_family: dict = defaultdict(list)
     for e in train:
         fp_vals.append(np.load(e["floorplan"])["data"].ravel().astype(np.float64))
         pw_vals.append(np.load(e["power"])["data"].ravel().astype(np.float64))
+        label_by_family[e["family"]].append(np.load(e["label"]).ravel().astype(np.float64))
     fp_all = np.concatenate(fp_vals)
     pw_all = np.concatenate(pw_vals)
+    per_family_label = {}
+    for fam, chunks in label_by_family.items():
+        arr = np.concatenate(chunks)
+        per_family_label[fam] = {"mean": float(arr.mean()), "std": float(arr.std())}
     stats = {
         "floorplan": {"mean": float(fp_all.mean()), "std": float(fp_all.std())},
         "power": {"mean": float(pw_all.mean()), "std": float(pw_all.std())},
+        "label": per_family_label,
     }
     (splits_dir / "normalization_stats.json").write_text(json.dumps(stats, indent=2))
     print(f"Norm stats: {stats}")
 
     volume.commit()
     return {"n_train": len(train), "n_val": len(val), "n_test": len(test), "stats": stats}
+
+
+@app.local_entrypoint()
+def smoke_test():
+    """Run generate_labels on the first 16 instances only.
+
+        modal run modal_pipeline.py::smoke_test
+    """
+    result = generate_labels.remote(start=0, limit=16)
+    print(result)
 
 
 @app.local_entrypoint()
