@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 import torch
 import torch.nn as nn
 from torch.optim import Adam
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from torch.optim.lr_scheduler import CosineAnnealingLR
 
 from src.models.unet import PhysicsLoss
 
@@ -23,6 +23,7 @@ def train_epoch(
     phys_loss: PhysicsLoss,
     lam: float,
     device: str,
+    label_std: float = 1.0,
 ) -> dict[str, float]:
     model.train()
     mse_fn = nn.MSELoss()
@@ -31,7 +32,8 @@ def train_epoch(
         x, T_gt = x.to(device), T_gt.to(device)
         T_pred = model(x)
         mse = mse_fn(T_pred, T_gt)
-        phys = phys_loss(T_pred, x[:, 1:2])
+        # Q scaled by 1/label_std to match physics residual in normalized label space
+        phys = phys_loss(T_pred, x[:, 1:2] / label_std)
         loss = mse + lam * phys
         optimizer.zero_grad()
         loss.backward()
@@ -51,6 +53,7 @@ def val_epoch(
     phys_loss: PhysicsLoss,
     lam: float,
     device: str,
+    label_std: float = 1.0,
 ) -> dict[str, float]:
     model.eval()
     mse_fn = nn.MSELoss()
@@ -59,7 +62,7 @@ def val_epoch(
         x, T_gt = x.to(device), T_gt.to(device)
         T_pred = model(x)
         mse = mse_fn(T_pred, T_gt)
-        phys = phys_loss(T_pred, x[:, 1:2])
+        phys = phys_loss(T_pred, x[:, 1:2] / label_std)
         loss = mse + lam * phys
         n = x.size(0)
         total += loss.item() * n
@@ -77,6 +80,7 @@ def train(
     epochs: int = 50,
     lr: float = 1e-3,
     lam_phys: float = 0.1,
+    label_std: float = 1.0,
     checkpoint_dir: str | Path = "checkpoints",
     device: str = "cuda",
     log_fn: Callable[[int, dict, dict, float], None] | None = None,
@@ -86,16 +90,16 @@ def train(
 
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=lr, weight_decay=1e-4)
-    scheduler = ReduceLROnPlateau(optimizer, patience=5, factor=0.5)
+    scheduler = CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-6)
     phys_loss = PhysicsLoss().to(device)
 
     best_val_loss = math.inf
     w = len(str(epochs))
 
     for epoch in range(1, epochs + 1):
-        tr = train_epoch(model, train_loader, optimizer, phys_loss, lam_phys, device)
-        vl = val_epoch(model, val_loader, phys_loss, lam_phys, device)
-        scheduler.step(vl["loss"])
+        tr = train_epoch(model, train_loader, optimizer, phys_loss, lam_phys, device, label_std)
+        vl = val_epoch(model, val_loader, phys_loss, lam_phys, device, label_std)
+        scheduler.step()
 
         current_lr = optimizer.param_groups[0]["lr"]
         print(
