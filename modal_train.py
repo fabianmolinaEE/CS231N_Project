@@ -206,7 +206,7 @@ def sweep(
     batch_size: int = 8,
     base_channels: int = 32,
 ):
-    lams = [float(v) for v in lam_values.split(",")]
+    lams = [float(v.strip()) for v in lam_values.split(",") if v.strip()]
     print(f"Launching sweep over lam_phys={lams} ({len(lams)} parallel runs)")
     handles = [
         train_unet.spawn(
@@ -219,6 +219,9 @@ def sweep(
         for lam in lams
     ]
     for lam, handle in zip(lams, handles):
-        handle.get()
-        print(f"lam_phys={lam} complete")
+        try:
+            handle.get()
+            print(f"lam_phys={lam} complete")
+        except Exception as e:
+            print(f"ERROR: lam_phys={lam} failed: {e}")
     print("Sweep complete. Check W&B project 'gpu-thermal-prediction' for results.")
