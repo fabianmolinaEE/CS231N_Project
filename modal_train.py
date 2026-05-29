@@ -65,8 +65,17 @@ def train_unet(
     index_val   = f"{MOUNT}/splits/val.json"
     stats_path  = f"{MOUNT}/splits/normalization_stats.json"
 
-    train_ds = ThermalDataset(index_train, stats_path, training=True)
-    val_ds   = ThermalDataset(index_val,   stats_path, training=False)
+    # Compute label mean/std from raw training labels (no dataset object needed)
+    import numpy as np
+    with open(index_train) as _f:
+        _train_idx = json.load(_f)
+    _label_vals = np.concatenate([np.load(e["label"]).ravel() for e in _train_idx]).astype(np.float32)
+    label_mean = float(_label_vals.mean())
+    label_std  = float(_label_vals.std())
+    print(f"Label stats: mean={label_mean:.2f} K  std={label_std:.2f} K")
+
+    train_ds = ThermalDataset(index_train, stats_path, training=True,  label_mean=label_mean, label_std=label_std)
+    val_ds   = ThermalDataset(index_val,   stats_path, training=False, label_mean=label_mean, label_std=label_std)
     print(f"Dataset: {len(train_ds)} train / {len(val_ds)} val")
 
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True,  num_workers=2, pin_memory=True)
@@ -80,7 +89,6 @@ def train_unet(
     ckpt_dir = Path(MOUNT) / "checkpoints" / run_name
 
     import wandb
-    import numpy as np
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -98,6 +106,8 @@ def train_unet(
             "n_train": len(train_ds),
             "n_val": len(val_ds),
             "n_params": n_params,
+            "label_mean": label_mean,
+            "label_std": label_std,
         },
     )
 
@@ -156,6 +166,7 @@ def train_unet(
             epochs=epochs,
             lr=lr,
             lam_phys=lam_phys,
+            label_std=label_std,
             checkpoint_dir=ckpt_dir,
             device=device,
             log_fn=log_fn,
