@@ -44,6 +44,7 @@ def train_unet(
     lr: float = 1e-3,
     batch_size: int = 8,
     base_channels: int = 32,
+    model_type: str = "unet",
 ):
     import sys
     sys.path.insert(0, "/app")
@@ -53,11 +54,10 @@ def train_unet(
     from torch.utils.data import DataLoader
 
     from src.dataset import ThermalDataset
-    from src.models.unet import UNet
     from src.train import train
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Device: {device}  |  lam_phys={lam_phys}  |  epochs={epochs}  |  base_ch={base_channels}")
+    print(f"Device: {device}  |  model={model_type}  |  lam_phys={lam_phys}  |  epochs={epochs}  |  base_ch={base_channels}")
 
     volume.reload()
 
@@ -81,11 +81,21 @@ def train_unet(
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True,  num_workers=2, pin_memory=True)
     val_loader   = DataLoader(val_ds,   batch_size=batch_size, shuffle=False, num_workers=2, pin_memory=True)
 
-    model = UNet(base_channels=base_channels)
+    if model_type == "unet":
+        from src.models.unet import UNet
+        model = UNet(base_channels=base_channels)
+    elif model_type == "plain_cnn":
+        from src.models.baseline_cnn import PlainCNN
+        model = PlainCNN(base_channels=base_channels)
+    elif model_type == "encoder_decoder":
+        from src.models.encoder_decoder import EncoderDecoder
+        model = EncoderDecoder(base_channels=base_channels)
+    else:
+        raise ValueError(f"Unknown model_type: {model_type!r}")
     n_params = sum(p.numel() for p in model.parameters())
     print(f"Model params: {n_params:,}")
 
-    run_name = f"unet_lam{lam_phys}_ep{epochs}_b{base_channels}"
+    run_name = f"{model_type}_lam{lam_phys}_ep{epochs}_b{base_channels}"
     ckpt_dir = Path(MOUNT) / "checkpoints" / run_name
 
     import wandb
@@ -98,6 +108,7 @@ def train_unet(
         project="gpu-thermal-prediction",
         name=run_name,
         config={
+            "model_type": model_type,
             "lam_phys": lam_phys,
             "epochs": epochs,
             "base_channels": base_channels,
@@ -188,6 +199,7 @@ def main(
     lr: float = 1e-3,
     batch_size: int = 8,
     base_channels: int = 32,
+    model_type: str = "unet",
 ):
     train_unet.remote(
         lam_phys=lam_phys,
@@ -195,6 +207,7 @@ def main(
         lr=lr,
         batch_size=batch_size,
         base_channels=base_channels,
+        model_type=model_type,
     )
 
 
@@ -225,3 +238,32 @@ def sweep(
         except Exception as e:
             print(f"ERROR: lam_phys={lam} failed: {e}")
     print("Sweep complete. Check W&B project 'gpu-thermal-prediction' for results.")
+
+
+@app.local_entrypoint()
+def run_baselines(
+    epochs: int = 250,
+    lr: float = 1e-3,
+    batch_size: int = 8,
+    base_channels: int = 64,
+):
+    models = ["plain_cnn", "encoder_decoder"]
+    print(f"Launching baseline runs: {models} (lam_phys=0.0, base_channels={base_channels})")
+    handles = [
+        train_unet.spawn(
+            model_type=m,
+            lam_phys=0.0,
+            epochs=epochs,
+            lr=lr,
+            batch_size=batch_size,
+            base_channels=base_channels,
+        )
+        for m in models
+    ]
+    for m, handle in zip(models, handles):
+        try:
+            handle.get()
+            print(f"{m} complete")
+        except Exception as e:
+            print(f"ERROR: {m} failed: {e}")
+    print("Baseline runs complete. Check W&B project 'gpu-thermal-prediction' for results.")
