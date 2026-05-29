@@ -1,0 +1,65 @@
+\begin{thebibliography}{1}\itemsep=-1pt
+
+\bibitem{CircuitNet2}
+Z.~Chai, Y.~Zhao, W.~Liu, Y.~Lin, R.~Wang, and R.~Huang.
+\newblock {CircuitNet} 2.0: An advanced dataset for promoting machine learning
+  innovations in realistic chip design environments.
+\newblock In {\em International Conference on Learning Representations (ICLR)},
+  2024.
+
+\bibitem{DeepOHeat}
+L.~Cheng et~al.
+\newblock {DeepOHeat}: Operator learning-based ultra-fast thermal simulation in
+  {3D-IC} design.
+\newblock In {\em Design Automation Conference (DAC)}, 2023.
+
+\bibitem{HotSpot}
+W.~Huang, S.~Ghosh, S.~Velusamy, K.~Sankaranarayanan, K.~Skadron, and M.~R.
+  Stan.
+\newblock {HotSpot}: A compact thermal modeling methodology for early-stage
+  {VLSI} design.
+\newblock {\em IEEE Transactions on Very Large Scale Integration (VLSI)
+  Systems}, 14(5):501--513, 2006.
+
+\bibitem{Raissi2019}
+M.~Raissi, P.~Perdikaris, and G.~E. Karniadakis.
+\newblock Physics-informed neural networks: A deep learning framework for
+  solving forward and inverse problems involving nonlinear partial differential
+  equations.
+\newblock {\em Journal of Computational Physics}, 378:686--707, 2019.
+
+\bibitem{UNet}
+O.~Ronneberger, P.~Fischer, and T.~Brox.
+\newblock {U-Net}: Convolutional networks for biomedical image segmentation.
+\newblock In {\em Medical Image Computing and Computer-Assisted Intervention
+  (MICCAI)}, pages 234--241, 2015.
+
+\bibitem{PixelShuffle}
+W.~Shi, J.~Caballero, F.~Husz{\'a}r, J.~Totz, A.~P. Aitken, R.~Bishop,
+  D.~Rueckert, and Z.~Wang.
+\newblock Real-time single image and video super-resolution using an efficient
+  sub-pixel convolutional neural network.
+\newblock In {\em IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 1874--1883, 2016.
+
+\bibitem{EncoderDecoderThermal}
+H.~Xie et~al.
+\newblock Fast thermal analysis for chiplet design based on generative
+  adversarial network.
+\newblock In {\em ACM/IEEE International Symposium on Low Power Electronics and
+  Design (ISLPED)}, 2022.
+
+\bibitem{PACT}
+Z.~Yuan, Y.~Fang, S.~Sinha, Q.~Xu, J.~Hu, Z.~Zhao, Y.~Shi, and D.~Bhatt.
+\newblock {PACT}: An extensible framework for power, architecture, circuit, and
+  thermal simulation of {3D-ICs}.
+\newblock {\em IEEE Transactions on Computer-Aided Design of Integrated
+  Circuits and Systems}, 40(11):2401--2413, 2021.
+
+\bibitem{MLPACT}
+Z.~Zhao et~al.
+\newblock {ML-PACT}: A machine learning framework for power, architecture,
+  circuit, and thermal co-simulation.
+\newblock {\em arXiv preprint arXiv:2302.08806}, 2023.
+
+\end{thebibliography}
