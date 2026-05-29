@@ -65,17 +65,17 @@ def train_unet(
     index_val   = f"{MOUNT}/splits/val.json"
     stats_path  = f"{MOUNT}/splits/normalization_stats.json"
 
-    # Compute label mean/std from raw training labels (no dataset object needed)
     import numpy as np
-    with open(index_train) as _f:
-        _train_idx = json.load(_f)
-    _label_vals = np.concatenate([np.load(e["label"]).ravel() for e in _train_idx]).astype(np.float32)
-    label_mean = float(_label_vals.mean())
-    label_std  = float(_label_vals.std())
-    print(f"Label stats: mean={label_mean:.2f} K  std={label_std:.2f} K")
+    with open(stats_path) as _f:
+        _norm_stats = json.load(_f)
+    label_stats = _norm_stats["label"]  # {family: {"mean": ..., "std": ...}}
+    # Representative label_std for physics loss scaling (average across families)
+    label_std = float(np.mean([v["std"] for v in label_stats.values()]))
+    _fam_summary = {k: f"mean={v['mean']:.1f} std={v['std']:.1f}" for k, v in label_stats.items()}
+    print(f"Per-family label stats: {_fam_summary}")
 
-    train_ds = ThermalDataset(index_train, stats_path, training=True,  label_mean=label_mean, label_std=label_std)
-    val_ds   = ThermalDataset(index_val,   stats_path, training=False, label_mean=label_mean, label_std=label_std)
+    train_ds = ThermalDataset(index_train, stats_path, training=True,  label_stats=label_stats)
+    val_ds   = ThermalDataset(index_val,   stats_path, training=False, label_stats=label_stats)
     print(f"Dataset: {len(train_ds)} train / {len(val_ds)} val")
 
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True,  num_workers=2, pin_memory=True)
@@ -106,8 +106,8 @@ def train_unet(
             "n_train": len(train_ds),
             "n_val": len(val_ds),
             "n_params": n_params,
-            "label_mean": label_mean,
-            "label_std": label_std,
+            "label_stats": label_stats,
+            "label_std_avg": label_std,
         },
     )
 
@@ -116,6 +116,9 @@ def train_unet(
     _x0, _y0 = val_ds[0]
     _x0 = _x0.unsqueeze(0)   # (1, 2, H, W)
     _y0 = _y0.unsqueeze(0)   # (1, 1, H, W)
+    _val0_family = val_ds.index[0]["family"]
+    _val0_lmean = label_stats[_val0_family]["mean"]
+    _val0_lstd  = label_stats[_val0_family]["std"]
 
     def _tensor_to_pil(t, vmin, vmax, cmap="inferno"):
         """Render tensor as a PIL Image using a shared [vmin, vmax] scale (WR-03)."""
@@ -145,16 +148,17 @@ def train_unet(
                     pred_s = model(x_s)
             finally:
                 model.train()  # always restore, even if inference fails (WR-01)
-            gt_arr   = y_s[0].squeeze().cpu().float().numpy()
-            pred_arr = pred_s[0].squeeze().cpu().float().numpy()
-            gt_vmin, gt_vmax = float(gt_arr.min()), float(gt_arr.max())
+            # De-normalize to Kelvin for interpretable display
+            gt_K   = y_s[0].squeeze().cpu().float() * _val0_lstd + _val0_lmean
+            pred_K = pred_s[0].squeeze().cpu().float() * _val0_lstd + _val0_lmean
+            gt_vmin, gt_vmax = float(gt_K.min()), float(gt_K.max())
             pw_arr = x_s[0, 1].cpu().float().numpy()
             log_dict["val/sample"] = [
                 wandb.Image(_tensor_to_pil(x_s[0, 0], 0.0, 1.0, cmap="gray"),    caption="Cell Density"),
                 wandb.Image(_tensor_to_pil(x_s[0, 1], float(pw_arr.min()), float(pw_arr.max()), cmap="hot"), caption="Power"),
-                wandb.Image(_tensor_to_pil(y_s[0],    gt_vmin, gt_vmax, cmap="inferno"), caption="Ground Truth"),
-                wandb.Image(_tensor_to_pil(pred_s[0], gt_vmin, gt_vmax, cmap="inferno"), caption="Predicted (GT scale)"),
-                wandb.Image(_tensor_to_pil(pred_s[0], float(pred_arr.min()), float(pred_arr.max()), cmap="inferno"), caption="Predicted (autoscale)"),
+                wandb.Image(_tensor_to_pil(gt_K,   gt_vmin, gt_vmax, cmap="inferno"), caption=f"GT (K) [{gt_vmin:.1f}–{gt_vmax:.1f}]"),
+                wandb.Image(_tensor_to_pil(pred_K, gt_vmin, gt_vmax, cmap="inferno"), caption="Predicted (GT scale K)"),
+                wandb.Image(_tensor_to_pil(pred_K, float(pred_K.min()), float(pred_K.max()), cmap="inferno"), caption="Predicted (autoscale K)"),
             ]
         wandb.log(log_dict, step=epoch)
 
@@ -192,3 +196,29 @@ def main(
         batch_size=batch_size,
         base_channels=base_channels,
     )
+
+
+@app.local_entrypoint()
+def sweep(
+    lam_values: str = "0.0,0.01,0.1,1.0",
+    epochs: int = 250,
+    lr: float = 1e-3,
+    batch_size: int = 8,
+    base_channels: int = 32,
+):
+    lams = [float(v) for v in lam_values.split(",")]
+    print(f"Launching sweep over lam_phys={lams} ({len(lams)} parallel runs)")
+    handles = [
+        train_unet.spawn(
+            lam_phys=lam,
+            epochs=epochs,
+            lr=lr,
+            batch_size=batch_size,
+            base_channels=base_channels,
+        )
+        for lam in lams
+    ]
+    for lam, handle in zip(lams, handles):
+        handle.get()
+        print(f"lam_phys={lam} complete")
+    print("Sweep complete. Check W&B project 'gpu-thermal-prediction' for results.")
