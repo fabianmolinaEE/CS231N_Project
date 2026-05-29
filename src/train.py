@@ -78,12 +78,13 @@ def train(
     lam_phys: float = 0.1,
     checkpoint_dir: str | Path = "checkpoints",
     device: str = "cuda",
+    log_fn=None,
 ) -> None:
     checkpoint_dir = Path(checkpoint_dir)
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
 
     model = model.to(device)
-    optimizer = Adam(model.parameters(), lr=lr)
+    optimizer = Adam(model.parameters(), lr=lr, weight_decay=1e-4)
     scheduler = ReduceLROnPlateau(optimizer, patience=5, factor=0.5)
     phys_loss = PhysicsLoss().to(device)
 
@@ -103,8 +104,11 @@ def train(
             f"lr {current_lr:.2e}"
         )
 
-        if vl["loss"] < best_val_loss:
-            best_val_loss = vl["loss"]
+        if log_fn is not None:
+            log_fn(epoch, tr, vl, current_lr)
+
+        if vl["mse"] < best_val_loss:
+            best_val_loss = vl["mse"]
             torch.save(
                 {
                     "epoch": epoch,
