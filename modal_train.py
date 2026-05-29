@@ -40,7 +40,7 @@ app = modal.App("unet-thermal-train", image=image)
 )
 def train_unet(
     lam_phys: float = 0.1,
-    epochs: int = 150,
+    epochs: int = 250,
     lr: float = 1e-3,
     batch_size: int = 8,
     base_channels: int = 32,
@@ -137,16 +137,13 @@ def train_unet(
                 model.train()  # always restore, even if inference fails (WR-01)
             gt_arr   = y_s[0].squeeze().cpu().float().numpy()
             pred_arr = pred_s[0].squeeze().cpu().float().numpy()
-            # shared scale anchored to GT so both panels are comparable
-            vmin = float(min(gt_arr.min(), pred_arr.min()))
-            vmax = float(max(gt_arr.max(), pred_arr.max()))
             gt_vmin, gt_vmax = float(gt_arr.min()), float(gt_arr.max())
             pw_arr = x_s[0, 1].cpu().float().numpy()
             log_dict["val/sample"] = [
                 wandb.Image(_tensor_to_pil(x_s[0, 0], 0.0, 1.0, cmap="gray"),    caption="Cell Density"),
                 wandb.Image(_tensor_to_pil(x_s[0, 1], float(pw_arr.min()), float(pw_arr.max()), cmap="hot"), caption="Power"),
-                wandb.Image(_tensor_to_pil(pred_s[0], vmin, vmax, cmap="inferno"), caption="Predicted"),
-                wandb.Image(_tensor_to_pil(y_s[0],    vmin, vmax, cmap="inferno"), caption="Ground Truth"),
+                wandb.Image(_tensor_to_pil(y_s[0],    gt_vmin, gt_vmax, cmap="inferno"), caption="Ground Truth"),
+                wandb.Image(_tensor_to_pil(pred_s[0], gt_vmin, gt_vmax, cmap="inferno"), caption="Predicted (GT scale)"),
                 wandb.Image(_tensor_to_pil(pred_s[0], float(pred_arr.min()), float(pred_arr.max()), cmap="inferno"), caption="Predicted (autoscale)"),
             ]
         wandb.log(log_dict, step=epoch)
@@ -172,7 +169,7 @@ def train_unet(
 @app.local_entrypoint()
 def main(
     lam_phys: float = 0.1,
-    epochs: int = 150,
+    epochs: int = 250,
     lr: float = 1e-3,
     batch_size: int = 8,
     base_channels: int = 32,
