@@ -39,3 +39,26 @@ def test_val_loss_finite():
         train(UNet(), loader, loader, epochs=1, device="cpu", checkpoint_dir=tmp)
         ckpt = torch.load(f"{tmp}/best.pt", weights_only=True)
         assert math.isfinite(ckpt["val_loss"])
+
+
+def test_log_fn_called_each_epoch(tmp_path):
+    """log_fn is called once per epoch with (epoch, train_metrics, val_metrics, lr)."""
+    x = torch.randn(4, 2, 64, 64)
+    y = torch.randn(4, 1, 64, 64)
+    loader = DataLoader(TensorDataset(x, y), batch_size=2)
+
+    calls = []
+
+    def log_fn(epoch, tr, vl, lr):
+        calls.append((epoch, tr, vl, lr))
+
+    model = UNet(base_channels=4)
+    train(model, loader, loader, epochs=3, lam_phys=0.0,
+          checkpoint_dir=tmp_path, device="cpu", log_fn=log_fn)
+
+    assert len(calls) == 3, f"expected 3 calls, got {len(calls)}"
+    assert calls[0][0] == 1
+    assert calls[2][0] == 3
+    assert "mse" in calls[0][1]
+    assert "mse" in calls[0][2]
+    assert isinstance(calls[0][3], float)
