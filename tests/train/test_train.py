@@ -62,3 +62,6 @@ def test_log_fn_called_each_epoch(tmp_path):
     assert "mse" in calls[0][1]
     assert "mse" in calls[0][2]
     assert isinstance(calls[0][3], float)
+    assert math.isfinite(calls[0][1]["mse"]) and calls[0][1]["mse"] >= 0
+    assert math.isfinite(calls[0][2]["mse"]) and calls[0][2]["mse"] >= 0
+    assert calls[0][3] > 0  # lr must be positive
