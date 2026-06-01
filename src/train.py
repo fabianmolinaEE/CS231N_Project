@@ -10,6 +10,7 @@ import torch.nn as nn
 from torch.optim import Adam
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
+from src.evaluate import ssim
 from src.models.unet import PhysicsLoss
 
 if TYPE_CHECKING:
@@ -57,7 +58,7 @@ def val_epoch(
 ) -> dict[str, float]:
     model.eval()
     mse_fn = nn.MSELoss()
-    total = mse_total = phys_total = 0.0
+    total = mse_total = phys_total = ssim_total = 0.0
     for x, T_gt in loader:
         x, T_gt = x.to(device), T_gt.to(device)
         T_pred = model(x)
@@ -68,8 +69,9 @@ def val_epoch(
         total += loss.item() * n
         mse_total += mse.item() * n
         phys_total += phys.item() * n
+        ssim_total += ssim(T_pred, T_gt) * n
     N = len(loader.dataset)
-    return {"loss": total / N, "mse": mse_total / N, "phys": phys_total / N}
+    return {"loss": total / N, "mse": mse_total / N, "phys": phys_total / N, "ssim": ssim_total / N}
 
 
 def train(

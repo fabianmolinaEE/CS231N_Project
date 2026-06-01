@@ -148,6 +148,7 @@ def train_unet(
             "val/loss": vl["loss"],
             "val/mse": vl["mse"],
             "val/physics": vl["phys"],
+            "val/ssim": vl["ssim"],
             "lr": lr,
         }
         if epoch % 10 == 0:
