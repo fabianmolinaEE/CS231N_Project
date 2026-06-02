@@ -283,23 +283,27 @@ decoder doubles resolution (PixelShuffleUp) with skip connections
 
 \subsection{Baseline Architectures}
 
-We compare against three baselines of increasing representational
-power:
+We compare two architectural baselines against U-Net to isolate the contributions
+of spatial hierarchy and skip connections. Both baselines use $b {=} 64$ base
+channels. The physics loss sweep ($\lambda_\text{phys} \in \{0,\,0.01,\,0.1,\,1.0\}$)
+is applied to all three architectures independently, giving 12 trained models total.
 
-\textbf{PlainCNN.} A flat dilated CNN with no skip connections:
-eight DoubleConv blocks with dilations $[1,1,2,2,4,4,8,8]$ that
-expand the receptive field without downsampling. This baseline tests
-whether spatial hierarchy is necessary.
+\textbf{PlainCNN} ($b {=} 64$, ${\approx}600$K parameters).
+Eight DoubleConv blocks in sequence at full $256\times256$ resolution. No downsampling,
+no skip connections. Dilations follow the schedule $[1,\,1,\,2,\,2,\,4,\,4,\,8,\,8]$,
+doubling every two blocks. By the final block the effective receptive field covers the
+full input. A $1\times1$ convolution produces the output. This tests whether spatial
+hierarchy is necessary for accurate hotspot localization.
 
-\textbf{EncoderDecoder.} Same four-stage encoder as the U-Net, but
-the decoder upsamples without concatenating encoder features---no
-skip connections. This baseline isolates the contribution of
-skip connections.
+\textbf{EncoderDecoder} ($b {=} 64$, ${\approx}28$M parameters).
+Same four-stage encoder as U-Net ($2 \to 64 \to 128 \to 256 \to 512$ via MaxPool2d,
+then a 1024-channel bottleneck) with a symmetric PixelShuffleUp decoder. The key
+difference: each decoder stage receives only the upsampled feature map, not a
+concatenated encoder skip. There is no \texttt{Dropout2d} in the bottleneck. This
+isolates the contribution of skip connections from the effect of the physics loss.
 
-\textbf{U-Net (MSE-only).} Full U-Net with skip connections trained
-with $\mathcal{L} = \mathcal{L}_\text{MSE}$ only ($\lambda_\text{phys}
-= 0$). This is the direct ablation partner of our physics-constrained
-model.
+The $\lambda_\text{phys} {=} 0$ configuration of U-Net is the direct MSE-only ablation
+baseline, not a separate architecture.
 
 \subsection{Physics-Constrained Loss}
 
@@ -311,7 +315,11 @@ the 2D heat equation:
 \end{equation}
 where $Q$ is the power-density field (channel~2 of the input image)
 and $k$ is the thermal conductivity of silicon
-($k \approx 149\,\mathrm{W\,m^{-1}K^{-1}}$). Given the model's predicted
+($k \approx 149\,\mathrm{W\,m^{-1}K^{-1}}$).
+In practice we set $k {=} 1.0$ during training, since thermal labels are normalized
+per chip family and the physics residual must operate in the same normalized space
+as $\mathcal{L}_\text{MSE}$.
+Given the model's predicted
 output $\hat{T}$, we approximate the Laplacian via a fixed $3\times3$
 finite-difference convolution:
 \begin{equation}
