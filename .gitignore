@@ -8,6 +8,7 @@ data/splits/*.tmp
 # Committed small artifacts: split index JSONs + normalization stats
 # (all other data/splits/* and data/* are excluded via the directories above)
 checkpoints/
+wandb/
 .planning/
 .claude/
 __pycache__/

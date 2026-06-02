@@ -1,7 +1,12 @@
-"""Evaluate all λ checkpoints on in-distribution val set + OOD conditions.
+"""Evaluate all checkpoints on combined val+test set + OOD conditions.
 
-Produces a results table (RMSE in Kelvin, SSIM, Hotspot-IoU) for each
-(model, condition) pair and saves results to /data/eval_ood_results.json.
+Models evaluated:
+  - UNet with λ = 0.0, 0.01, 0.1, 1.0  (base_channels=32)
+  - PlainCNN with λ = 0.0               (base_channels=64)
+  - EncoderDecoder with λ = 0.0         (base_channels=64)
+
+Metrics: RMSE (Kelvin), SSIM, Hotspot-IoU (top 5%)
+Results saved to /data/eval_ood_results.json and locally.
 
 Usage:
     modal run modal_eval_ood.py
@@ -13,13 +18,25 @@ from pathlib import Path
 volume = modal.Volume.from_name("circuitnet-n14", create_if_missing=False)
 MOUNT = "/data"
 
-LAM_VALUES = [0.0, 0.01, 0.1, 1.0]
-EPOCHS = 250
-BASE_CHANNELS = 32
-
 # Tags must match modal_ood.py: _t_chip_tag() and _r_convec_tag()
 OOD_THICKNESS_TAGS = ["t75um", "t100um", "t200um", "t300um"]
 OOD_HTC_TAGS = ["rconv0p01", "rconv0p05", "rconv0p20", "rconv0p50"]
+
+# All model runs to evaluate: (display_name, model_type, lam, base_channels)
+MODEL_CONFIGS = [
+    ("unet_lam0.00",     "unet",            0.0,  32),
+    ("unet_lam0.01",     "unet",            0.01, 32),
+    ("unet_lam0.10",     "unet",            0.1,  32),
+    ("unet_lam1.00",     "unet",            1.0,  32),
+    ("plain_cnn_lam0.00","plain_cnn",       0.0,  64),
+    ("plain_cnn_lam0.01","plain_cnn",       0.01, 64),
+    ("plain_cnn_lam0.10","plain_cnn",       0.1,  64),
+    ("plain_cnn_lam1.00","plain_cnn",       1.0,  64),
+    ("enc_dec_lam0.00",  "encoder_decoder", 0.0,  64),
+    ("enc_dec_lam0.01",  "encoder_decoder", 0.01, 64),
+    ("enc_dec_lam0.10",  "encoder_decoder", 0.1,  64),
+    ("enc_dec_lam1.00",  "encoder_decoder", 1.0,  64),
+]
 
 image = (
     modal.Image.debian_slim(python_version="3.11")
@@ -36,20 +53,39 @@ image = (
 app = modal.App("unet-eval-ood", image=image)
 
 
-def _ckpt_name(lam: float) -> str:
-    return f"unet_lam{lam}_ep{EPOCHS}_b{BASE_CHANNELS}"
+def _ckpt_name(model_type: str, lam: float, base_channels: int) -> str:
+    return f"{model_type}_lam{lam}_ep250_b{base_channels}"
 
 
-def _build_ood_index(val_index: list, tag: str, ood_root: Path) -> list:
+def _build_ood_index(base_index: list, tag: str, ood_root: Path) -> list:
     """Replace label paths with OOD labels; skip instances where label is missing."""
-    ood_entries = []
-    for entry in val_index:
+    entries = []
+    for entry in base_index:
         family = entry["family"]
         stem = Path(entry["label"]).parent.name
         ood_label = ood_root / tag / family / stem / "thermal.npy"
         if ood_label.exists():
-            ood_entries.append({**entry, "label": str(ood_label)})
-    return ood_entries
+            entries.append({**entry, "label": str(ood_label)})
+    return entries
+
+
+def _load_model(model_type: str, base_channels: int, ckpt_path: Path, device: str):
+    import torch
+    if model_type == "unet":
+        from src.models.unet import UNet
+        model = UNet(base_channels=base_channels)
+    elif model_type == "plain_cnn":
+        from src.models.baseline_cnn import PlainCNN
+        model = PlainCNN(base_channels=base_channels)
+    elif model_type == "encoder_decoder":
+        from src.models.encoder_decoder import EncoderDecoder
+        model = EncoderDecoder(base_channels=base_channels)
+    else:
+        raise ValueError(f"Unknown model_type: {model_type!r}")
+    ckpt = torch.load(ckpt_path, map_location=device)
+    model.load_state_dict(ckpt["model_state"])
+    model.to(device).eval()
+    return model, ckpt.get("epoch", "?"), ckpt.get("val_loss", float("nan"))
 
 
 @app.function(
@@ -66,7 +102,6 @@ def eval_all():
     sys.path.insert(0, "/app")
 
     from torch.utils.data import DataLoader, Dataset
-    from src.models.unet import UNet
     from src.dataset import ThermalDataset
     from src.evaluate import ssim, hotspot_iou
 
@@ -74,27 +109,28 @@ def eval_all():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Device: {device}")
 
-    # Load normalization stats
     stats_path = f"{MOUNT}/splits/normalization_stats.json"
     with open(stats_path) as f:
         norm_stats = json.load(f)
     label_stats = norm_stats["label"]
 
-    # Load val index
+    # Combine val + test for evaluation
     with open(f"{MOUNT}/splits/val.json") as f:
         val_index = json.load(f)
-    print(f"Val set: {len(val_index)} instances")
+    with open(f"{MOUNT}/splits/test.json") as f:
+        test_index = json.load(f)
+    eval_index = val_index + test_index
+    print(f"Eval set: {len(val_index)} val + {len(test_index)} test = {len(eval_index)} total")
 
     # Build OOD indices
     ood_root = Path(MOUNT) / "ood_labels"
     ood_tags = OOD_THICKNESS_TAGS + OOD_HTC_TAGS
     ood_indices = {}
     for tag in ood_tags:
-        entries = _build_ood_index(val_index, tag, ood_root)
+        entries = _build_ood_index(eval_index, tag, ood_root)
         ood_indices[tag] = entries
-        print(f"  OOD [{tag}]: {len(entries)} instances with labels")
+        print(f"  OOD [{tag}]: {len(entries)} instances")
 
-    # Dataset that also yields family name for per-sample denormalization
     class FamilyDataset(Dataset):
         def __init__(self, base_ds):
             self.ds = base_ds
@@ -118,7 +154,6 @@ def eval_all():
 
     @torch.no_grad()
     def eval_loader(model, loader):
-        """Compute RMSE (K), SSIM, Hotspot-IoU; denormalize to Kelvin per family."""
         model.eval()
         preds_K, gts_K = [], []
         for x, T_norm, families in loader:
@@ -129,8 +164,7 @@ def eval_all():
                 mean = label_stats[fam]["mean"]
                 preds_K.append(pred_norm[i] * std + mean)
                 gts_K.append(T_norm[i] * std + mean)
-
-        T_pred = torch.stack(preds_K)  # (N, 1, H, W)
+        T_pred = torch.stack(preds_K)
         T_gt = torch.stack(gts_K)
         data_range = float(T_gt.max() - T_gt.min())
         return {
@@ -141,38 +175,34 @@ def eval_all():
         }
 
     results = {}
+    ckpt_root = Path(MOUNT) / "checkpoints"
 
-    for lam in LAM_VALUES:
-        run_name = _ckpt_name(lam)
-        ckpt_path = Path(MOUNT) / "checkpoints" / run_name / "best.pt"
+    for display_name, model_type, lam, base_ch in MODEL_CONFIGS:
+        ckpt_name = _ckpt_name(model_type, lam, base_ch)
+        ckpt_path = ckpt_root / ckpt_name / "best.pt"
         if not ckpt_path.exists():
-            print(f"MISSING checkpoint: {ckpt_path}")
+            print(f"MISSING: {ckpt_path} — skipping {display_name}")
             continue
 
-        model = UNet(base_channels=BASE_CHANNELS).to(device)
-        ckpt = torch.load(ckpt_path, map_location=device)
-        model.load_state_dict(ckpt["model_state"])
-        saved_epoch = ckpt.get("epoch", "?")
-        saved_loss = ckpt.get("val_loss", float("nan"))
-        print(f"\n=== lam={lam} (epoch {saved_epoch}, best_val_mse={saved_loss:.5f}) ===")
+        model, epoch, val_loss = _load_model(model_type, base_ch, ckpt_path, device)
+        n_params = sum(p.numel() for p in model.parameters())
+        print(f"\n=== {display_name} (epoch {epoch}, best_val_mse={val_loss:.5f}, params={n_params:,}) ===")
 
-        lam_results = {}
+        run = {}
 
-        # In-distribution val
-        m = eval_loader(model, make_loader(val_index))
-        lam_results["val_id"] = m
-        print(f"  val (in-dist): RMSE={m['rmse_K']:.3f}K  SSIM={m['ssim']:.4f}  IoU={m['hotspot_iou']:.4f}  n={m['n']}")
+        m = eval_loader(model, make_loader(eval_index))
+        run["eval_id"] = m
+        print(f"  eval (in-dist): RMSE={m['rmse_K']:.3f}K  SSIM={m['ssim']:.4f}  IoU={m['hotspot_iou']:.4f}  n={m['n']}")
 
-        # OOD conditions
         for tag in ood_tags:
             if not ood_indices[tag]:
-                print(f"  [{tag}] skipped (no labels found)")
+                print(f"  [{tag}] skipped (no labels)")
                 continue
             m = eval_loader(model, make_loader(ood_indices[tag]))
-            lam_results[tag] = m
+            run[tag] = m
             print(f"  [{tag}]: RMSE={m['rmse_K']:.3f}K  SSIM={m['ssim']:.4f}  IoU={m['hotspot_iou']:.4f}  n={m['n']}")
 
-        results[str(lam)] = lam_results
+        results[display_name] = run
 
     out_path = Path(MOUNT) / "eval_ood_results.json"
     with open(out_path, "w") as f:
@@ -186,25 +216,24 @@ def eval_all():
 def main():
     results = eval_all.remote()
 
-    conditions = ["val_id"] + OOD_THICKNESS_TAGS + OOD_HTC_TAGS
+    model_names = list(results.keys())
+    conditions = ["eval_id"] + OOD_THICKNESS_TAGS + OOD_HTC_TAGS
 
-    def print_table(metric_key, label):
+    def print_table(metric_key, label, fmt):
         print(f"\n=== {label} ===")
-        header = f"{'Condition':<18}" + "".join(f"  {'λ='+str(l):<10}" for l in LAM_VALUES)
+        col_w = 13
+        header = f"{'Condition':<18}" + "".join(f"  {n:>{col_w}}" for n in model_names)
         print(header)
         for cond in conditions:
             row = f"{cond:<18}"
-            for lam in LAM_VALUES:
-                m = results.get(str(lam), {}).get(cond)
-                if m:
-                    row += f"  {m[metric_key]:>8.4f}  "
-                else:
-                    row += "  —         "
+            for name in model_names:
+                m = results.get(name, {}).get(cond)
+                row += f"  {fmt(m):>{col_w}}" if m else f"  {'—':>{col_w}}"
             print(row)
 
-    print_table("rmse_K", "RMSE (Kelvin)")
-    print_table("ssim", "SSIM")
-    print_table("hotspot_iou", "Hotspot IoU (top 5%)")
+    print_table("rmse_K",      "RMSE (Kelvin)",         lambda m: f"{m['rmse_K']:.3f}K")
+    print_table("hotspot_iou", "Hotspot IoU (top 5%)",  lambda m: f"{m['hotspot_iou']:.4f}")
+    print_table("ssim",        "SSIM",                  lambda m: f"{m['ssim']:.4f}")
 
     with open("eval_ood_results.json", "w") as f:
         json.dump(results, f, indent=2)

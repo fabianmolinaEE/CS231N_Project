@@ -219,9 +219,10 @@ def sweep(
     lr: float = 1e-3,
     batch_size: int = 8,
     base_channels: int = 32,
+    model_type: str = "unet",
 ):
     lams = [float(v.strip()) for v in lam_values.split(",") if v.strip()]
-    print(f"Launching sweep over lam_phys={lams} ({len(lams)} parallel runs)")
+    print(f"Launching sweep: model={model_type}  lam_phys={lams} ({len(lams)} parallel runs)")
     handles = [
         train_unet.spawn(
             lam_phys=lam,
@@ -229,6 +230,7 @@ def sweep(
             lr=lr,
             batch_size=batch_size,
             base_channels=base_channels,
+            model_type=model_type,
         )
         for lam in lams
     ]
