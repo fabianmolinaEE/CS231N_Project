@@ -231,10 +231,12 @@ Our primary model is a U-Net~\cite{UNet} with pixel-shuffle upsampling,
 illustrated in Figure~\ref{fig:arch}. The encoder progressively
 halves spatial resolution while doubling feature channels through
 four stages; the decoder restores resolution using skip connections
-from the corresponding encoder stages. The channel progression is
-$2 \to 64 \to 128 \to 256 \to 512$ through the encoder, with a
-$512 \to 1024$ bottleneck, and $1024 \to 512 \to 256 \to 128 \to 64 \to 1$
-through the decoder. The model has approximately 8M parameters.
+from the corresponding encoder stages. The architecture is parameterized by base channel count $b$; we train with
+$b {=} 32$ (${\approx}2$M parameters). The encoder progression is
+$2 \to b \to 2b \to 4b \to 8b$, the bottleneck has $16b$ channels, and
+the decoder mirrors this symmetrically back to a single output channel.
+For $b {=} 32$: encoder goes $2 \to 32 \to 64 \to 128 \to 256$, bottleneck
+has 512 channels.
 
 \textbf{DoubleConv block.} Each encoder and decoder stage applies
 two sequential $3\times3$ convolutions, each followed by batch
@@ -260,6 +262,11 @@ After upsampling, the decoder concatenates the skip-connected encoder
 feature map and applies a DoubleConv block to fuse the two
 resolutions. The output layer is a $1\times1$ convolution with no
 activation function (linear regression for unbounded temperature values).
+
+\textbf{Bottleneck regularization.} A spatial dropout layer
+(\texttt{Dropout2d}, $p {=} 0.3$) is applied to the bottleneck output before
+upsampling begins. This pushes the decoder to rely on skip-connected
+encoder features rather than only the bottleneck representation.
 
 \begin{figure}[t]
 \begin{center}
