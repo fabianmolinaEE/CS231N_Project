@@ -270,14 +270,18 @@ encoder features rather than only the bottleneck representation.
 
 \begin{figure}[t]
 \begin{center}
-% TODO: Replace with actual architecture diagram (TikZ or exported figure).
-\fbox{\rule{0pt}{3.5cm}\rule{0.9\linewidth}{0pt}}
+\includegraphics[width=\linewidth]{arch_diagram}
 \end{center}
-\caption{U-Net architecture with pixel-shuffle upsampling. Input:
-2-channel floorplan + power-density image. Output: 1-channel thermal
-heatmap. Encoder halves resolution at each stage (MaxPool2d);
-decoder doubles resolution (PixelShuffleUp) with skip connections
-(dashed lines) concatenating encoder feature maps.}
+\caption{The three architectures evaluated in this work. \textbf{Left:}
+PlainCNN---eight DoubleConv blocks ($b{=}64$) at full $256\!\times\!256$
+resolution with dilations $[1,1,2,2,4,4,8,8]$; no downsampling (${\approx}600$K
+parameters). \textbf{Center:} EncoderDecoder---four-stage encoder
+(MaxPool2d) and symmetric PixelShuffleUp decoder without skip connections
+($b{=}64$, ${\approx}28$M parameters). \textbf{Right:} U-Net---identical
+encoder/decoder to EncoderDecoder plus lateral skip connections (dashed)
+that concatenate encoder feature maps at each decoder stage ($b{=}32$,
+${\approx}2$M parameters). All architectures accept a 2-channel
+floorplan+power input and produce a 1-channel thermal heatmap.}
 \label{fig:arch}
 \end{figure}
 
