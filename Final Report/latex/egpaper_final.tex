@@ -342,14 +342,27 @@ OOD samples without requiring additional labeled data.
 \subsection{Training Details}
 
 All models are trained with the Adam optimizer
-($\beta_1 {=} 0.9$, $\beta_2 {=} 0.999$, $\epsilon {=} 10^{-8}$),
-initial learning rate $10^{-3}$, and a ReduceLROnPlateau scheduler
-(patience 5, factor 0.5) monitoring validation MSE.
-Training runs for up to 50 epochs with early stopping.
-% TODO: Fill in batch size and hardware once training runs complete.
-Checkpoints are saved at each validation loss improvement.
-The training loop logs MSE and physics-loss components separately
-per epoch to enable post-hoc analysis of the loss trade-off.
+($\beta_1 {=} 0.9$, $\beta_2 {=} 0.999$, $\epsilon {=} 10^{-8}$,
+weight decay $10^{-4}$) and an initial learning rate of $10^{-3}$.
+The learning rate follows a cosine annealing schedule (CosineAnnealingLR)
+with $T_\text{max} = 250$ and a minimum rate $\eta_\text{min} = 10^{-6}$.
+Every model trains for exactly 250 epochs with no early stopping, and we
+keep the checkpoint with the lowest validation MSE. Each run uses batch
+size 8 on a single NVIDIA A10G GPU (24\,GB VRAM) via Modal.
+
+\textbf{Per-family label normalization.} Thermal labels span different
+absolute ranges across chip families (Vortex-small, Vortex-large,
+NVDLA-large) because the families differ in total power. We normalize
+each label by the per-family mean and standard deviation computed on
+the training split, so the model sees every family's thermal structure
+at a consistent scale. The power-density input to the physics loss is
+divided by the mean label standard deviation across families, which
+keeps the physics residual in the same normalized space as the labels.
+
+The training loop logs MSE and physics-loss components separately per
+epoch to W\&B, which lets us analyze the loss trade-off after the fact.
+The physics sweep evaluates $\lambda_\text{phys} \in \{0,\,0.01,\,0.1,\,1.0\}$
+across all three architectures (12 models total).
 
 %------------------------------------------------------------------------
 \section{Experiments}
