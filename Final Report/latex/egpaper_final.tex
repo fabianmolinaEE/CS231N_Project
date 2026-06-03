@@ -183,44 +183,60 @@ compatible with mini-batch training on image data.
 \paragraph{Source.}
 We use CircuitNet~2.0~\cite{CircuitNet2} as our source of chip
 layout inputs. From the full dataset we select the GPU and AI
-accelerator designs---Vortex-small, Vortex-large, and NVDLA-large---
-which provide representative modern workload power profiles.
-% TODO: Report the exact number of usable designs after filtering
-% (spatial alignment verification and minimum power-density threshold).
+accelerator designs: Vortex-small (96 instances), Vortex-large (61
+instances), and NVDLA-large (32 instances), for 189 instances total.
 Each sample consists of a two-channel $256\times256$ image: channel~1
-is the post-placement floorplan encoding block boundaries and
-functional unit types; channel~2 is the normalized power-density map
-derived from post-synthesis switching activity estimates.
+is the post-placement floorplan (macro-region feature) encoding block
+boundaries and functional unit types; channel~2 is the power-density
+map derived from post-synthesis switching activity estimates.
+Figure~\ref{fig:data} shows a representative sample.
 
 \paragraph{Label generation.}
-We run HotSpot in grid mode on each layout with a sweep over die
-thickness and die size to generate ground-truth steady-state thermal
-maps. Parallelized label generation uses \texttt{xargs} for
-throughput.
-% TODO: Lock and list the exact die thickness values (e.g.,
-% \{50, 100, 150\}\,\mu\text{m}) and die size values once finalized.
-Temperature maps are normalized to $[0,1]$ using the global
-minimum and maximum temperatures across the training partition.
+We run HotSpot~\cite{HotSpot} in grid mode ($256\times256$ output)
+on each layout using a multi-block $16\times16$ floorplan
+decomposition. The training configuration uses a die thickness of
+$150\,\mu\text{m}$ and a convective resistance of
+$r_\text{convec}{=}0.1\,\text{K/W}$. Power-density values are
+capped at $10\,\text{W}$ per tile to suppress outliers from unit
+conversion. Label generation is parallelized across all 189 instances
+using cloud-based serverless workers (Modal). For the OOD evaluation,
+we re-run HotSpot at four additional thicknesses ($75$, $100$, $200$,
+$300\,\mu\text{m}$) and four additional convective resistances
+($r_\text{convec}\in\{0.01,\,0.05,\,0.20,\,0.50\}\,\text{K/W}$),
+producing $189\times 8 = 1{,}512$ additional OOD labels. Thermal
+labels are normalized per chip family using the training-split mean
+and standard deviation, so each family's thermal range is mapped to a
+consistent scale regardless of absolute power level.
 
 \paragraph{Splits.}
-We partition by design family to prevent data leakage: Vortex-small and
-Vortex-large form the training set; NVDLA-large is held out as the
-in-distribution test set. A disjoint subset of die configurations---
-specifically, die thickness and die size values outside the training
-sweep---is reserved exclusively for the OOD evaluation. This two-axis
-generalization test is our headline experiment.
-
-\paragraph{Synthetic ablation set.}
-For rapid iteration before the full CircuitNet pipeline is ready, we
-also generate synthetic random floorplans: grids of rectangular blocks
-assigned random power values drawn uniformly from $[0.1, 2.0]$\,W.
-These are used for architecture unit tests and loss sensitivity sweeps.
+We split instances randomly (seed~42) into 80/10/10 train/val/test
+partitions within each family, yielding 153 training, 18 validation,
+and 18 test instances. All three families appear in each partition.
+The OOD evaluation uses the combined val and test sets
+($18+18=36$ instances) re-evaluated under held-out physical parameters
+(thickness and convective resistance) never seen during training.
 
 \paragraph{Augmentation.}
 We apply random horizontal and vertical flips during training.
 Rotation is excluded because our discrete Laplacian kernel is
 not rotation-equivariant and rotating a layout would invalidate
 the physics constraint.
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics[width=\linewidth]{data_figure}
+\end{center}
+\caption{Representative sample from the Vortex-large family.
+\textbf{Left:} post-placement floorplan (macro-region feature);
+dark regions are active logic blocks.
+\textbf{Center:} power-density map derived from post-synthesis
+switching activity; bright spots indicate high-power functional units.
+\textbf{Right:} HotSpot steady-state thermal label (Kelvin);
+the hotspot ring corresponds to the high-power region in the
+power map. The model takes the floorplan and power map as a
+2-channel input and predicts the thermal label.}
+\label{fig:data}
+\end{figure}
 
 %------------------------------------------------------------------------
 \section{Methods}
