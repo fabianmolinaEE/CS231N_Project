@@ -730,6 +730,55 @@ boundary condition terms into the physics residual, and scaling to
 introduces additional modeling challenges.
 
 
+%------------------------------------------------------------------------
+\section*{Contributions}
+
+\textbf{Fabian Molina} designed and implemented the full data pipeline:
+downloading and inspecting the CircuitNet~2.0 GPU subset, writing the
+\texttt{npz\_to\_hotspot.py} and \texttt{parse\_hotspot\_output.py}
+conversion scripts, configuring HotSpot in grid mode with multi-block
+$16{\times}16$ floorplan decomposition, and parallelizing label
+generation across all 189 instances using Modal serverless workers.
+Fabian authored the dataset split logic (\texttt{modal\_pipeline.py},
+\texttt{scripts/make\_split.py}), per-family normalization, the
+PyTorch \texttt{ThermalDataset} dataloader, and all associated unit
+tests. He also wrote the Data and Methods sections of this report,
+generated the architecture diagrams and data figure, and maintained
+the GSD planning system and project documentation throughout.
+
+\textbf{Ruben Carrazco} designed and implemented all three model
+architectures (U-Net with pixel-shuffle upsampling, EncoderDecoder,
+and PlainCNN), the full Modal training loop with W\&B logging, the
+physics-constrained loss with discrete Laplacian kernel, the
+CosineAnnealingLR scheduler, and the $\lambda$ sweep entrypoints.
+Ruben ran all 12 model checkpoints on Modal A10G GPUs, implemented
+the OOD label generation pipeline (\texttt{modal\_ood.py}) across
+all eight thickness and convection-resistance conditions, wrote the
+OOD evaluation script (\texttt{modal\_eval\_ood.py}), and produced
+all result figures via \texttt{modal\_viz.py}. He wrote the Abstract,
+Introduction, Related Work, Experiments, and Conclusion sections of
+this report.
+
+Both authors contributed to the experimental design, the physics-loss
+formulation, the OOD generalization framing, and review of the final
+report.
+
+%------------------------------------------------------------------------
+\section*{Acknowledgments}
+
+We used Claude (Anthropic) as an AI assistant throughout this project.
+Claude provided substantial help with the data pipeline: in particular,
+we relied on it to understand how to invoke HotSpot in grid mode, how
+to correctly parse the \texttt{.grid.steady} output format (which uses
+a per-layer sequential-index layout rather than the column--row--temp
+format described in the documentation), and how to structure the
+multi-block $16{\times}16$ floorplan conversion. Claude also assisted
+with LaTeX editing, figure generation scripts (\texttt{arch\_diagram.py},
+\texttt{data\_figure.py}), debugging of the dataset and evaluation
+code, and maintaining project planning documents. All model design
+decisions, experimental methodology, result interpretation, and written
+analysis are the work of the authors.
+
 %%%%%%%%% REFERENCES
 {\small
 \bibliographystyle{ieee}
