@@ -1,170 +1,96 @@
-# CS231N Project — Physics-Constrained Chip Thermal Map Prediction
+# Physics-Constrained Thermal Map Prediction for VLSI Chip Design
 
-Predict full-chip thermal maps from post-placement floorplan and power-density images using a physics-constrained U-Net. The key research question: does enforcing the steady-state heat equation as a differentiable training constraint help a model generalize to chip configurations (die sizes, die thicknesses) it was never trained on?
-
-**Team:** Fabian Molina, Ruben Carrazco
-**Course:** CS231N — Deep Neural Networks for Computer Vision, Stanford Spring 2026
+CS231N Final Project — Stanford Spring 2026  
+**Fabian Molina** · **Ruben Carrazco**
 
 ---
 
-## Novelty Claim
+## Overview
 
-Two threads exist separately in the literature:
-- **Image-based thermal prediction** — data-driven CNN models, no physics constraints, fail outside training distribution
-- **Physics-informed neural networks (PINNs)** — enforce heat equation constraints, but use raw matrix inputs, not images
+We train a physics-constrained U-Net to predict full-chip steady-state thermal heatmaps from a 2-channel floorplan+power-density image. The model enforces the 2D heat equation as a differentiable Laplacian penalty — no simulator calls during training.
 
-**This project combines them.** The headline experiment: a physics-constrained U-Net degrades less than an MSE-only baseline when evaluated on physical parameters (die thickness, die size) outside the training sweep. This OOD generalization gap is the core contribution.
+**Research question:** does a heat-equation residual constraint reduce OOD degradation when die thickness or convective resistance fall outside the training distribution?
 
----
-
-## Problem Statement
-
-Given a 2-channel input image (post-placement floorplan + power-density map), predict a single-channel thermal heatmap. Framed as dense image-to-image regression.
-
-During design-space exploration (e.g., simulated annealing with tens of thousands of steps), running a full thermal simulator at each step is prohibitive. A fast neural surrogate can replace it — but only if it stays physically plausible outside its training distribution.
-
-**Success targets:**
-- SSIM ≥ 0.80 on held-out test set
-- Physics-constrained model degrades less than MSE-only baseline on OOD die parameters
-- Inference time < 100 ms per design on GPU
+**Short answer:** yes for moderate convection-resistance shifts (8–11% RMSE reduction), no for die-thickness extrapolation.
 
 ---
 
-## Technical Approach
+## Results
 
-### Simulator
-**HotSpot** (confirmed). Open-source, block-level RC thermal simulator. Used in grid mode → dense 2D heatmap output compatible with image-to-image framing. Parameterizable die thickness and die size sweep. Parallelizable with `xargs` for large-scale label generation.
+### In-Distribution Test Set
 
-PACT investigated and ruled out: at 256×256 with few cores, HotSpot is 2.3× faster than PACT (PACT paper Fig. 18). PACT also requires Xyce + OpenMPI setup and CircuitNet→PACT format conversion. PACT and ML-PACT will be cited in related work only.
+| Model | RMSE (K) ↓ | SSIM ↑ | Hotspot IoU ↑ |
+|---|---|---|---|
+| PlainCNN | 2.420 | 0.987 | 0.630 |
+| EncoderDecoder | 1.213 | 0.999 | 0.781 |
+| U-Net (λ=0, MSE-only) | 1.008 | 0.995 | 0.819 |
+| **U-Net (λ=0.01)** | **0.895** | **0.996** | **0.841** |
 
-### Dataset
-- **Primary:** CircuitNet 2.0 — GPU/accelerator subset (Vortex-small, Vortex-large, NVDLA-large)
-- **Ablations:** Synthetic random floorplans — grid of rectangular blocks with random power values, zero setup cost, used for rapid iteration before full CircuitNet pipeline is ready
-- **Supplemental (if needed):** Chipyard for architectural diversity; ISPD benchmarks for out-of-distribution validation
+The physics penalty at λ=0.01 reduces RMSE by 11% and improves hotspot IoU by 2.7 pp over the MSE-only baseline.
 
-### Architecture
-U-Net encoder-decoder with skip connections. Two training configurations:
-- **Baseline:** MSE loss only
-- **Primary:** Physics-informed composite loss
+### OOD Generalization (U-Net variants)
+
+| Condition | λ=0 RMSE (K) | λ=0.01 RMSE (K) | Δ |
+|---|---|---|---|
+| In-dist (150 µm, r=0.1 K/W) | 1.008 | **0.895** | −11.2% |
+| r=0.01 K/W | 1.595 | **1.458** | −8.6% |
+| r=0.05 K/W | 1.259 | **1.124** | −10.7% |
+| r=0.20 K/W | 1.203 | **1.200** | ≈0% |
+| r=0.50 K/W | **3.847** | 3.926 | +2.1% |
+| 75 µm | 6.592 | **6.428** | −2.5% |
+| 100 µm | 4.299 | **4.136** | −3.8% |
+| 200 µm | **3.137** | 3.252 | +3.7% |
+| 300 µm | **9.376** | 9.504 | +1.4% |
+
+Die-thickness OOD degrades 9–10× at 300 µm regardless of λ; the Laplacian kernel cannot encode thickness-dependent boundary conditions.
+
+---
+
+## Method
+
+**Input:** 2-channel 256×256 image — post-placement floorplan (cell density) + power-density map  
+**Output:** 1-channel 256×256 steady-state thermal heatmap (Kelvin)
 
 ### Physics Loss
 
-The 2D steady-state heat equation: `k · ∇²T + Q = 0`
+The 2D steady-state heat equation: `k ∇²T + Q = 0`
 
-Where `T` is the predicted temperature map, `Q` is the power-density input, and `k` is thermal conductivity of silicon (~149 W/m·K). Laplacian computed via a fixed 3×3 convolution applied to the predicted output:
-
-```
-Laplacian kernel:  0   1   0
-                   1  -4   1
-                   0   1   0
-```
-
-Training objective:
+Laplacian approximated via a fixed 3×3 finite-difference kernel applied to the model's output. No simulator at training time.
 
 ```
-L_total = λ_data · L_MSE(T_pred, T_label) + λ_phys · mean(|| k · ∇²T_pred + Q ||²)
+L_total = L_MSE(T_pred, T_label) + λ · ‖k (K * T_pred) + Q‖²_F
 ```
 
-Fully differentiable. No simulation at training time. Penalizes physically implausible predictions independent of whether a ground-truth label exists — which is why it helps OOD generalization.
+`λ ∈ {0, 0.01, 0.1, 1.0}` swept across all three architectures (12 models total).
 
-### Headline Experiment
+### Architectures
 
-Train all models with die thicknesses and die sizes sampled from a fixed sweep. Evaluate on physical parameters **outside** that sweep. Measure SSIM and hotspot localization degradation. Physics-constrained U-Net should degrade less than MSE-only baseline.
+- **U-Net** (b=32, ~2M params) — encoder-decoder with lateral skip connections + PixelShuffle upsampling
+- **EncoderDecoder** (b=64, ~28M params) — same structure, no skip connections
+- **PlainCNN** (b=64, ~600K params) — 8 dilated DoubleConv blocks at full resolution, no downsampling
 
----
+### Training
 
-## Milestones
-
-### Milestone 1 — Problem Definition + Related Work (DONE)
-- [x] Define the problem as image-to-image regression
-- [x] Identify CircuitNet 2.0 as the primary dataset
-- [x] Plan HotSpot label generation workflow
-- [x] Survey related work: U-Net, pix2pix, DeepOHeat, CircuitNet 2.0, HotSpot
-- [x] Receive and incorporate TA feedback (add explicit baselines, ablations, validation strategy)
-
----
-
-### Milestone 2 — Data Pipeline
-**Owner: TBD (pipeline partner)**
-
-- [ ] Download CircuitNet 2.0 GPU/accelerator subset (Vortex-small, Vortex-large, NVDLA-large)
-- [ ] Verify spatial alignment of floorplan and power-map channels
-- [ ] Run HotSpot in grid mode on a small sample (5–10 designs) to validate label-generation workflow
-- [ ] Lock HotSpot grid resolution and temperature normalization strategy
-- [ ] Define die thickness and die size sweep values (at least 3 die thickness values)
-- [ ] Implement label generation at scale with parameterized die configs (parallelized with `xargs`)
-- [ ] Define train/val/test split by design family to avoid leakage; hold out a subset of die configs for OOD eval
-- [ ] Implement synthetic random floorplan generator for ablation runs
-- [ ] Write PyTorch `Dataset` class that loads (input pair, thermal label, die config) tuples
-- [ ] Write `DataLoader` with basic augmentation (horizontal/vertical flip)
-- [ ] Sanity-check script: visualize 3–5 input/label pairs side by side
+- **Optimizer:** Adam (lr=1e-3, weight_decay=1e-4)
+- **Schedule:** CosineAnnealingLR (T_max=250, η_min=1e-6)
+- **Epochs:** 250, no early stopping; checkpoint at lowest validation MSE
+- **Hardware:** NVIDIA A10G (24 GB) via Modal
+- **Logging:** W&B
 
 ---
 
-### Milestone 3 — Baseline Models
-**Owner: TBD (model partner)**
+## Dataset
 
-- [ ] Implement flat CNN regressor (no skip connections) — lower bound
-- [ ] Implement basic encoder-decoder without skip connections
-- [ ] Implement U-Net with MSE-only loss — primary baseline
-- [ ] Train all baselines; log RMSE and SSIM on validation set
-- [ ] Set up training infrastructure: loss logging, checkpoint saving, learning rate scheduler
-- [ ] Confirm SSIM as primary metric for model selection
+**Source:** CircuitNet 2.0 — GPU/accelerator subset  
+- Vortex-small (96 instances), Vortex-large (61), NVDLA-large (32) → **189 instances total**
 
----
+**Labels:** HotSpot in grid mode (256×256), multi-block 16×16 floorplan decomposition  
+- Training config: die thickness 150 µm, r_convec = 0.1 K/W  
+- Power density capped at 10 W/tile; label generation parallelized on Modal  
+- OOD labels: 4 additional thicknesses + 4 additional convection resistances = 1,512 extra labels
 
-### Milestone 4 — Physics-Constrained U-Net
-**Owner: TBD (model partner)**
-
-- [ ] Implement physics loss: fixed Laplacian kernel applied to predicted output
-- [ ] Implement composite loss: `L_total = λ_data · L_MSE + λ_phys · L_physics`
-- [ ] Train physics-constrained U-Net and compare against MSE-only baseline
-- [ ] Sweep `λ_phys` values; log both losses separately per run
-- [ ] Run ablations:
-  - [ ] Skip connections on vs. off
-  - [ ] λ_phys = 0 (MSE-only) vs. λ_phys > 0 (physics-constrained)
-  - [ ] Physics loss in normalized vs. physical units
-- [ ] Save best checkpoint and log all run configs
-
----
-
-### Milestone 5 — OOD Evaluation + Analysis
-**Owner: both**
-
-- [ ] Evaluate all models on held-out die configs (thickness and size outside training sweep)
-- [ ] Compute SSIM and hotspot localization degradation: physics model vs. MSE-only baseline
-- [ ] Compute full test-set metrics: RMSE, MSE, SSIM on in-distribution test set
-- [ ] Benchmark inference time on same hardware for all models
-- [ ] Generate qualitative heatmap visualizations: input channels → predicted → ground truth
-- [ ] Run GradCAM or saliency analysis to understand what layout features drive predictions
-- [ ] Identify and document at least 3 failure cases with explanations
-- [ ] Produce comparison table: CNN baseline, encoder-decoder, U-Net MSE-only, U-Net physics-constrained
-
----
-
-### Milestone 6 — Final Report + Poster
-**Owner: both**
-
-- [ ] Write intro and motivation: design-space exploration bottleneck, OOD generalization problem
-- [ ] Write related work: CircuitNet, HotSpot, U-Net, PINNs, ML-PACT (cite but don't use), DeepOHeat
-- [ ] Write data section: CircuitNet subset, HotSpot workflow, die config sweep, split strategy
-- [ ] Write method section: architecture diagram, physics loss derivation, training details
-- [ ] Write experiments section: in-distribution metrics, OOD degradation table, ablation table, qualitative figures
-- [ ] Write conclusion: what worked, what didn't, what we would do next
-- [ ] Create architecture diagram: input → encoder → bottleneck → decoder → output heatmap + physics loss term
-- [ ] Prepare poster for CS231N poster session
-
----
-
-## Work Split (Proposed)
-
-| Track | Owner | Milestones |
-|-------|-------|------------|
-| Data pipeline + HotSpot labels | TBD | M2 |
-| Baselines + physics-constrained U-Net | TBD | M3, M4 |
-| OOD evaluation, report, poster | Both | M5, M6 |
-
-Assign names once you've agreed on the split.
+**Split:** 80/10/10 train/val/test (seed 42), stratified by family → 153 / 18 / 18 instances  
+**Normalization:** per-family z-score on training split
 
 ---
 
@@ -172,83 +98,67 @@ Assign names once you've agreed on the split.
 
 ```
 CS231N_Project/
-├── README.md
-├── docs/
-│   ├── project-proposal.md
-│   ├── project-milestone1.md
-│   ├── architecture-research.md
-│   └── meetings/
-├── data/                  ← gitignored; CircuitNet 2.0 lives here
-│   ├── raw/
-│   └── labels/
 ├── src/
-│   ├── dataset.py         ← PyTorch Dataset + DataLoader
-│   ├── models/
-│   │   ├── baseline_cnn.py
-│   │   ├── encoder_decoder.py
-│   │   └── unet.py        ← primary model (MSE-only + physics-constrained configs)
-│   ├── train.py
-│   ├── evaluate.py
-│   └── visualize.py
+│   ├── dataset.py              # ThermalDataset + DataLoader
+│   ├── train.py                # training loop, W&B logging, cosine LR
+│   ├── evaluate.py             # RMSE, hotspot IoU, SSIM
+│   ├── visualize.py
+│   └── models/
+│       ├── unet.py             # U-Net with PixelShuffleUp
+│       ├── encoder_decoder.py  # EncoderDecoder (no skip connections)
+│       └── baseline_cnn.py     # PlainCNN (dilated, full-resolution)
 ├── scripts/
-│   └── generate_labels.sh ← HotSpot label generation (parameterized for die config sweep)
-├── notebooks/
-│   └── sanity_check.ipynb
-└── checkpoints/           ← gitignored
+│   ├── npz_to_hotspot.py       # CircuitNet NPZ → HotSpot floorplan format
+│   ├── parse_hotspot_output.py # parse .grid.steady → (256,256) numpy array
+│   ├── make_split.py           # local fallback for train/val/test splits
+│   └── log_eval_to_wandb.py    # log eval tables + charts to W&B
+├── modal_pipeline.py           # HotSpot label generation + splits on Modal
+├── modal_train.py              # remote training entrypoint
+├── modal_ood.py                # OOD label generation (thickness + HTC sweep)
+├── modal_eval_ood.py           # evaluate all checkpoints on OOD conditions
+├── modal_viz.py                # generate result figures
+├── eval_ood_results.json       # full evaluation results (n=36, 9 conditions)
+├── tests/
+│   ├── test_dataset.py
+│   └── test_evaluate.py
+├── Final Report/
+│   └── CS231N_report.tex       # final paper (CVPR format)
+├── CS231N_FinalPoster/
+│   └── main.tex                # poster (Gemini beamer theme)
+├── third_party/HotSpot/        # HotSpot thermal simulator
+├── docs/                       # design notes, meeting summaries
+└── requirements.txt
 ```
 
 ---
-
-## Key References
-
-- [CircuitNet 2.0](https://openreview.net/forum?id=H1z7m3Kc7S)
-- [U-Net (Ronneberger et al., 2015)](https://arxiv.org/abs/1505.04597)
-- [pix2pix (Isola et al., 2017)](https://arxiv.org/abs/1611.07004)
-- [Encoder-Decoder Networks for Thermal/PDN Analysis](https://dl.acm.org/doi/10.1145/3526115)
-- [DeepOHeat](https://doi.org/10.1109/DAC56929.2023.10247998)
-- [HotSpot thermal simulator](https://dl.acm.org/doi/10.1145/859618.859620)
-- [Physics-Informed Neural Networks (Raissi et al., 2019)](https://arxiv.org/abs/1711.10561)
-- [PACT (Yuan et al., IEEE TCAD)](https://ieeexplore.ieee.org/document/9296639) — cited in related work; HotSpot used for label generation
-- [ML-PACT](https://arxiv.org/abs/2302.08806) — cited in related work; targets transient (not steady-state)
-
----
-
-## Open Questions
-
-- [ ] How many CircuitNet GPU/accelerator designs after filtering? Enough for training?
-- [ ] What specific die thickness values to sweep? (at least 3)
-- [ ] Unit normalization in physics loss: normalized vs. physical units?
-- [ ] λ_data and λ_phys starting values for the sweep?
-- [ ] Does ML-PACT have a publicly released dataset?
-
----
-
-## Compute
-
-| Provider | Credits | Notes |
-|----------|---------|-------|
-| Modal | $200 (shared) | Primary — Python-native, easiest for iterative runs |
-| AWS | $100 | EC2 `p3`/`g5` instances; good backup |
-| Azure Students | $100 | NC-series VMs (V100/A100) |
-| Google Cloud | $50 | Supplemental |
-
-**Total: ~$450 in GPU credits.**
-
-Modal is the default for training runs:
-- GPU target: A100 or H100 via Modal's on-demand fleet
-- Launch training with `modal run scripts/train_modal.py`
-- Checkpoints written back to a Modal volume (persistent across runs)
 
 ## Setup
 
 ```bash
 git clone <repo-url>
 cd CS231N_Project
-
-# install dependencies (fill in once decided)
 pip install -r requirements.txt
 
-# Modal CLI (for remote training)
+# Modal (for remote training/label generation)
 pip install modal
 modal setup
 ```
+
+Data lives in `data/` (gitignored). Download CircuitNet 2.0 GPU subset via Hugging Face:
+
+```bash
+bash scripts/download_data.sh   # requires HF_TOKEN env var
+```
+
+---
+
+## References
+
+- [CircuitNet 2.0](https://openreview.net/forum?id=H1z7m3Kc7S)
+- [HotSpot](https://dl.acm.org/doi/10.1145/859618.859620)
+- [U-Net (Ronneberger et al., 2015)](https://arxiv.org/abs/1505.04597)
+- [PixelShuffle (Shi et al., 2016)](https://arxiv.org/abs/1609.05158)
+- [PINNs (Raissi et al., 2019)](https://arxiv.org/abs/1711.10561)
+- [DeepOHeat](https://doi.org/10.1109/DAC56929.2023.10247998)
+- [pix2pix](https://arxiv.org/abs/1611.07004)
+- [ML-PACT](https://arxiv.org/abs/2302.08806)
